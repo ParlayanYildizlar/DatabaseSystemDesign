@@ -4,6 +4,8 @@
  */
 package InvoiceTrackingSystem;
 
+import CorePackage.Customer;
+
 /**
  *
  * @author bayra
@@ -15,6 +17,10 @@ public class CustomerScreen extends javax.swing.JFrame {
      */
     public CustomerScreen() {
         initComponents();
+    }
+
+    CustomerScreen(Customer customer) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     /**
@@ -32,11 +38,11 @@ public class CustomerScreen extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 770, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
 
         pack();

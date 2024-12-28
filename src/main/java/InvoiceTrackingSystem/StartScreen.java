@@ -1,20 +1,159 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package InvoiceTrackingSystem;
+
+import CorePackage.Admin;
+import CorePackage.Customer;
+import CorePackage.Database;
+import CorePackage.User;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.MediaTracker;
+import java.io.File;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import java.util.List;
+import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 
 /**
  *
- * @author bayra
+ * @author sare
  */
 public class StartScreen extends javax.swing.JFrame {
 
-    /**
-     * Creates new form StartScreen
-     */
+    public static User account;
+    
+        // Radio Button'ları Tanımlayın
+    private ButtonGroup userTypeGroup;
+    
     public StartScreen() {
         initComponents();
+        setupFrame();
+        debugResourceLoading();
+
+        // Radio Button'ların tanımlanması
+        JRadioButton AdminButton = new JRadioButton("Admin");
+        JRadioButton CustomerButton = new JRadioButton("Customer");
+
+        // ButtonGroup ile radio button'ları grupla
+        ButtonGroup userTypeGroup = new ButtonGroup();
+        userTypeGroup.add(AdminButton);
+        userTypeGroup.add(CustomerButton);
+
+        // Radio Button'ları Panel veya Frame'e Ekleyin
+        jPanel1.setLayout(new FlowLayout()); // Yerleşim yöneticisi ayarı
+        jPanel1.add(AdminButton);
+        jPanel1.add(CustomerButton);
+
+    }
+
+    private void setupFrame() {
+        int newWidth = 200;  // Bu değeri artırıp azaltabilirsiniz
+        int newHeight = 100;
+        setTitle("Logo Ekranı");
+        //setSize(800, 600);
+        setSize(newWidth + 100, newHeight + 100); // 100 değerini artırıp azaltabilirsiniz
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        // Panel boyutunu ve arka plan rengini ayarla
+        StartPanel.setPreferredSize(new Dimension(800, 600));
+        StartPanel.setBackground(new Color(34, 40, 44));
+
+        // Absolute positioning için null layout kullan
+        StartPanel.setLayout(null);
+    }
+
+    private void setupLogo() {
+        try {
+            ImageIcon originalIcon = new ImageIcon(getClass().getResource("/images/logo.png"));
+
+            // Logo boyutunu ayarla
+            Image scaledImage = originalIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+            // Logo label'ını yapılandır
+            logoLabel.setIcon(scaledIcon);
+
+            // Logo konumunu sol üst köşeye ayarla
+            logoLabel.setBounds(20, 20, 150, 150); // x, y, width, height
+
+            // Eski logo label'ı kaldır ve yenisini ekle
+            StartPanel.removeAll();
+            StartPanel.add(logoLabel);
+
+            // Panel'i yenile
+            StartPanel.revalidate();
+            StartPanel.repaint();
+
+        } catch (Exception e) {
+            System.err.println("Logo yükleme hatası: " + e.getMessage());
+            logoLabel.setText("Logo yüklenemedi!");
+        }
+    }
+
+    private void debugResourceLoading() {
+        // 1. Çalışma dizinini kontrol et
+        System.out.println("Çalışma dizini: " + System.getProperty("user.dir"));
+
+        // 2. Farklı yolları dene ve sonuçları raporla
+        String[] possiblePaths = {
+            "/images/logo.png",
+            "images/logo.png",
+            "../images/logo.png",
+            "./images/logo.png"
+        };
+
+        for (String path : possiblePaths) {
+            System.out.println("\nPath deneniyor: " + path);
+            // Class loader ile dene
+            System.out.println("ClassLoader.getResource: "
+                    + getClass().getClassLoader().getResource(path));
+            // GetResource ile dene
+            System.out.println("Class.getResource: "
+                    + getClass().getResource(path));
+        }
+
+        // 3. Dosya sisteminde fiziksel olarak kontrol et
+        File file = new File("src/images/logo.png");
+        System.out.println("\nDosya fiziksel olarak var mı: " + file.exists());
+        if (file.exists()) {
+            System.out.println("Tam dosya yolu: " + file.getAbsolutePath());
+        }
+
+        // 4. Logo yüklemeyi dene
+        try {
+            // Önce File kullanarak dene
+            if (file.exists()) {
+                ImageIcon logoIcon = new ImageIcon(file.getAbsolutePath());
+                logoLabel.setIcon(logoIcon);
+                System.out.println("Logo dosyadan yüklendi");
+            } // Resource olarak dene
+            else {
+                var resourceUrl = getClass().getResource("/images/logo.png");
+                if (resourceUrl != null) {
+                    ImageIcon logoIcon = new ImageIcon(resourceUrl);
+                    logoLabel.setIcon(logoIcon);
+                    System.out.println("Logo resource'dan yüklendi");
+                } else {
+                    logoLabel.setText("Logo bulunamadı!");
+                    System.err.println("Logo dosyası bulunamadı!");
+                }
+            }
+            logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        } catch (Exception e) {
+            System.err.println("Logo yükleme hatası: " + e);
+            e.printStackTrace();
+            logoLabel.setText("Logo yüklenemedi!");
+        }
     }
 
     /**
@@ -26,25 +165,491 @@ public class StartScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLayeredPane1 = new javax.swing.JLayeredPane();
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup3 = new javax.swing.ButtonGroup();
+        buttonGroup4 = new javax.swing.ButtonGroup();
+        buttonGroup5 = new javax.swing.ButtonGroup();
+        buttonGroup6 = new javax.swing.ButtonGroup();
+        buttonGroup7 = new javax.swing.ButtonGroup();
+        StartPanel = new javax.swing.JPanel();
+        logoLabel = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        SignUpPanel = new javax.swing.JPanel();
+        SignUpLabel = new javax.swing.JLabel();
+        nameSurnameLabel = new javax.swing.JLabel();
+        UsernameLabel = new javax.swing.JLabel();
+        AccTypeLabel = new javax.swing.JLabel();
+        PasswordLabel = new javax.swing.JLabel();
+        PhoneNumberLabel = new javax.swing.JLabel();
+        NameSurnameTextField = new javax.swing.JTextField();
+        UsernameTextField = new javax.swing.JTextField();
+        PhoneNoTextField = new javax.swing.JTextField();
+        AdminButton = new javax.swing.JRadioButton();
+        CustomerButton = new javax.swing.JRadioButton();
+        SignUpButton = new javax.swing.JButton();
+        IDNumberLabel = new javax.swing.JLabel();
+        IDNumberTextField = new javax.swing.JTextField();
+        jPasswordField1 = new javax.swing.JPasswordField();
+        SignInLayeredPanel = new javax.swing.JLayeredPane();
+        SignInLabel = new javax.swing.JLabel();
+        UsernameLabel1 = new javax.swing.JLabel();
+        UsernameTextField1 = new javax.swing.JTextField();
+        PasswordLabel1 = new javax.swing.JLabel();
+        SignInButton = new javax.swing.JButton();
+        ForgotPasswordButton = new javax.swing.JRadioButton();
+        jPasswordSignIn = new javax.swing.JPasswordField();
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("SimSun", 1, 48)); // NOI18N
+        jTextArea1.setRows(5);
+        jTextArea1.setText("POWER FLOW");
+        jTextArea1.setSelectedTextColor(new java.awt.Color(0, 0, 51));
+        jScrollPane1.setViewportView(jTextArea1);
+
+        javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
+        jLayeredPane1.setLayout(jLayeredPane1Layout);
+        jLayeredPane1Layout.setHorizontalGroup(
+            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jLayeredPane1Layout.setVerticalGroup(
+            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        StartPanel.setBackground(new java.awt.Color(34, 40, 44));
+
+        logoLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoLabelMouseClicked(evt);
+            }
+        });
+
+        jLabel1.setBackground(java.awt.SystemColor.controlDkShadow);
+        jLabel1.setFont(new java.awt.Font("SimSun", 1, 48)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(50, 75, 96));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("POWER FLOW");
+        jLabel1.setToolTipText("");
+        jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        SignUpPanel.setBackground(new java.awt.Color(44, 47, 50));
+
+        SignUpLabel.setFont(new java.awt.Font("SimSun", 1, 18)); // NOI18N
+        SignUpLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        SignUpLabel.setText("SIGN UP");
+
+        nameSurnameLabel.setText("Name Surname");
+
+        UsernameLabel.setText("Username");
+
+        AccTypeLabel.setText("Account Type");
+
+        PasswordLabel.setText("Password");
+
+        PhoneNumberLabel.setText("Phone Number");
+
+        NameSurnameTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NameSurnameTextFieldActionPerformed(evt);
+            }
+        });
+
+        AdminButton.setText("Admin");
+        AdminButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AdminButtonActionPerformed(evt);
+            }
+        });
+
+        CustomerButton.setText("Customer");
+        CustomerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CustomerButtonActionPerformed(evt);
+            }
+        });
+
+        SignUpButton.setFont(new java.awt.Font("SimSun-ExtB", 1, 14)); // NOI18N
+        SignUpButton.setText("Sign Up");
+        SignUpButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SignUpButtonActionPerformed(evt);
+            }
+        });
+
+        IDNumberLabel.setText("National ID Number");
+
+        jPasswordField1.setText("jPasswordField1");
+        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jPasswordField1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout SignUpPanelLayout = new javax.swing.GroupLayout(SignUpPanel);
+        SignUpPanel.setLayout(SignUpPanelLayout);
+        SignUpPanelLayout.setHorizontalGroup(
+            SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SignUpPanelLayout.createSequentialGroup()
+                .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(SignUpPanelLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PhoneNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PasswordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(UsernameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(IDNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AccTypeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(SignUpPanelLayout.createSequentialGroup()
+                                .addGap(56, 56, 56)
+                                .addComponent(SignUpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(SignUpPanelLayout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(AdminButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(CustomerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(nameSurnameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, SignUpPanelLayout.createSequentialGroup()
+                            .addGap(40, 40, 40)
+                            .addComponent(SignUpLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(SignUpPanelLayout.createSequentialGroup()
+                            .addGap(7, 7, 7)
+                            .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(UsernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(NameSurnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(PhoneNoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(IDNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(43, Short.MAX_VALUE))
+        );
+        SignUpPanelLayout.setVerticalGroup(
+            SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SignUpPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(SignUpLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(nameSurnameLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(NameSurnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(UsernameLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(UsernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(PasswordLabel)
+                .addGap(9, 9, 9)
+                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addComponent(PhoneNumberLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(PhoneNoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(IDNumberLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(IDNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(AccTypeLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AdminButton)
+                    .addComponent(CustomerButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(SignUpButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        SignInLayeredPanel.setBackground(new java.awt.Color(43, 46, 49));
+        SignInLayeredPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        SignInLabel.setFont(new java.awt.Font("SimSun", 1, 18)); // NOI18N
+        SignInLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        SignInLabel.setText("SIGN IN");
+
+        UsernameLabel1.setText("Username");
+
+        PasswordLabel1.setText("Password");
+
+        SignInButton.setFont(new java.awt.Font("SimSun-ExtB", 1, 14)); // NOI18N
+        SignInButton.setText("Sign In");
+        SignInButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SignInButtonActionPerformed(evt);
+            }
+        });
+
+        ForgotPasswordButton.setText("Forgot Password?");
+        ForgotPasswordButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ForgotPasswordButtonActionPerformed(evt);
+            }
+        });
+
+        jPasswordSignIn.setText("jPasswordField2");
+
+        SignInLayeredPanel.setLayer(SignInLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        SignInLayeredPanel.setLayer(UsernameLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        SignInLayeredPanel.setLayer(UsernameTextField1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        SignInLayeredPanel.setLayer(PasswordLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        SignInLayeredPanel.setLayer(SignInButton, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        SignInLayeredPanel.setLayer(ForgotPasswordButton, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        SignInLayeredPanel.setLayer(jPasswordSignIn, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout SignInLayeredPanelLayout = new javax.swing.GroupLayout(SignInLayeredPanel);
+        SignInLayeredPanel.setLayout(SignInLayeredPanelLayout);
+        SignInLayeredPanelLayout.setHorizontalGroup(
+            SignInLayeredPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SignInLayeredPanelLayout.createSequentialGroup()
+                .addGap(68, 68, 68)
+                .addComponent(SignInButton, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SignInLayeredPanelLayout.createSequentialGroup()
+                .addContainerGap(28, Short.MAX_VALUE)
+                .addGroup(SignInLayeredPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(ForgotPasswordButton)
+                    .addComponent(UsernameTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                    .addComponent(PasswordLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(UsernameLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(SignInLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPasswordSignIn, javax.swing.GroupLayout.Alignment.LEADING))
+                .addGap(32, 32, 32))
+        );
+        SignInLayeredPanelLayout.setVerticalGroup(
+            SignInLayeredPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SignInLayeredPanelLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(SignInLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(54, 54, 54)
+                .addComponent(UsernameLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(UsernameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addComponent(PasswordLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jPasswordSignIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ForgotPasswordButton)
+                .addGap(24, 24, 24)
+                .addComponent(SignInButton)
+                .addContainerGap(51, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(203, Short.MAX_VALUE)
+                .addComponent(SignUpPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(SignInLayeredPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(169, 169, 169))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(SignUpPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(SignInLayeredPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout StartPanelLayout = new javax.swing.GroupLayout(StartPanel);
+        StartPanel.setLayout(StartPanelLayout);
+        StartPanelLayout.setHorizontalGroup(
+            StartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(StartPanelLayout.createSequentialGroup()
+                .addGroup(StartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(StartPanelLayout.createSequentialGroup()
+                        .addGap(76, 76, 76)
+                        .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(StartPanelLayout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        StartPanelLayout.setVerticalGroup(
+            StartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(StartPanelLayout.createSequentialGroup()
+                .addGroup(StartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(StartPanelLayout.createSequentialGroup()
+                        .addGap(88, 88, 88)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StartPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(StartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(StartPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
+    private void NameSurnameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameSurnameTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_NameSurnameTextFieldActionPerformed
+
+    private void CustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CustomerButtonActionPerformed
+        // Customer butonu seçildiğinde yapılacak işlemler
+        JOptionPane.showMessageDialog(this, "Customer account selected!", "Information", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_CustomerButtonActionPerformed
+
+    private void SignInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignInButtonActionPerformed
+        String password = String.valueOf(jPasswordSignIn.getPassword());
+        User acc = Database.loginVerification(UsernameTextField1.getText(), password);
+
+        if (acc == null) {
+            JOptionPane.showMessageDialog(this, "This user does not exist!",
+                    "User Not Found", JOptionPane.ERROR_MESSAGE);
+        } else if (acc instanceof Admin admin) {
+            StartScreen.account = acc;
+            UsernameTextField1.setText("");
+            jPasswordSignIn.setText("");
+
+            AdminScreen adminPage = new AdminScreen(admin);
+            adminPage.show();
+            dispose();
+
+        } else if (acc instanceof Customer) {
+            StartScreen.account = acc;
+            UsernameTextField1.setText("");
+            jPasswordSignIn.setText("");
+
+            CustomerScreen customerPage = new CustomerScreen((Customer) acc);
+            customerPage.show();
+            dispose();
+
+        }
+    }//GEN-LAST:event_SignInButtonActionPerformed
+
+
+    private void ForgotPasswordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ForgotPasswordButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ForgotPasswordButtonActionPerformed
+
+    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
+        // TODO add your handling code here:
+        // JPasswordField'den girilen şifreyi al
+        char[] passwordChars = jPasswordField1.getPassword(); // jPasswordField1, şifre alanının ID'sidir
+        String password = new String(passwordChars);
+
+        // Şifre doğrulama regex'i: En az 8 karakter, 1 büyük harf, 1 küçük harf, 1 rakam, 1 özel karakter
+        String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+
+        // Şifre regex ile uyumlu mu?
+        if (password.matches(regex)) {
+            JOptionPane.showMessageDialog(this, "Valid Password!", "Information", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid Password! Password must be at least 8 characters, contain 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        // Şifreyi konsola yazdırmak isterseniz (şifre gizliliği ihlali olabilir):
+        System.out.println("Entered Password: " + password);
+
+        // Girilen şifreyi temizle (güvenlik için)
+        jPasswordField1.setText("");
+    }//GEN-LAST:event_jPasswordField1ActionPerformed
+
+    private void AdminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminButtonActionPerformed
+        // Admin butonu seçildiğinde yapılacak işlemler
+        JOptionPane.showMessageDialog(this, "Admin account selected!", "Information", JOptionPane.INFORMATION_MESSAGE);
+
+        if (AdminButton.getText().equals("") || AdminButton.getText().equals("") || NameSurnameTextField.getText().equals("")) {
+
+            JOptionPane.showMessageDialog(this, "Fill All Entries.",
+                    "Failure", JOptionPane.INFORMATION_MESSAGE);
+
+        } else if (Database.checkUsername(UsernameTextField.getText())) {
+            JOptionPane.showMessageDialog(this, "Username Already Exist.",
+                    "Failure", JOptionPane.INFORMATION_MESSAGE);
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Please enter the verification code given to you to verify that you are an admin.",
+                    "Authentication", JOptionPane.INFORMATION_MESSAGE);
+
+            AuthenticationPageForAdmin authenticationPage = new AuthenticationPageForAdmin(NameSurnameTextField.getText(),
+                    UsernameTextField.getText(), jPasswordField1.getText());
+            authenticationPage.show();
+            dispose();
+
+        }
+    }//GEN-LAST:event_AdminButtonActionPerformed
+
+    private void logoLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoLabelMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_logoLabelMouseClicked
+
+    private void SignUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignUpButtonActionPerformed
+        if (UsernameTextField.getText().equals("") || jPasswordField1.getText().equals("")
+                || NameSurnameTextField.getText().equals("") || PhoneNoTextField.getText().equals("")
+                || IDNumberLabel.getText().equals("")) {
+
+            JOptionPane.showMessageDialog(this, "Fill All Entries.",
+                    "Failure", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        if (Database.checkUsername(UsernameTextField.getText())) {
+            JOptionPane.showMessageDialog(this, "Username Already Exist.",
+                    "Failure", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        System.out.println("AdminButton Selected: " + AdminButton.isSelected()); // Seçim kontrolü
+
+        if (AdminButton.isSelected()) {
+            JOptionPane.showMessageDialog(this, "Please enter the verification code given to you to verify that you are an admin.",
+                    "Authentication", JOptionPane.INFORMATION_MESSAGE);
+
+            try {
+                AuthenticationPageForAdmin authenticationPage = new AuthenticationPageForAdmin(
+                        NameSurnameTextField.getText(),
+                        UsernameTextField.getText(),
+                        PhoneNoTextField.getText(),
+                        IDNumberLabel.getText());
+                authenticationPage.setVisible(true); // Pencereyi görünür yap
+                dispose(); // Mevcut pencereyi kapat
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "An error occurred: " + e.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a valid user type.",
+                    "Failure", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+
+    }//GEN-LAST:event_SignUpButtonActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -69,14 +674,48 @@ public class StartScreen extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new StartScreen().setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            new StartScreen().setVisible(true);
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel AccTypeLabel;
+    private javax.swing.JRadioButton AdminButton;
+    private javax.swing.JRadioButton CustomerButton;
+    private javax.swing.JRadioButton ForgotPasswordButton;
+    private javax.swing.JLabel IDNumberLabel;
+    private javax.swing.JTextField IDNumberTextField;
+    private javax.swing.JTextField NameSurnameTextField;
+    private javax.swing.JLabel PasswordLabel;
+    private javax.swing.JLabel PasswordLabel1;
+    private javax.swing.JTextField PhoneNoTextField;
+    private javax.swing.JLabel PhoneNumberLabel;
+    private javax.swing.JButton SignInButton;
+    private javax.swing.JLabel SignInLabel;
+    private javax.swing.JLayeredPane SignInLayeredPanel;
+    private javax.swing.JButton SignUpButton;
+    private javax.swing.JLabel SignUpLabel;
+    private javax.swing.JPanel SignUpPanel;
+    private javax.swing.JPanel StartPanel;
+    private javax.swing.JLabel UsernameLabel;
+    private javax.swing.JLabel UsernameLabel1;
+    private javax.swing.JTextField UsernameTextField;
+    private javax.swing.JTextField UsernameTextField1;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.ButtonGroup buttonGroup3;
+    private javax.swing.ButtonGroup buttonGroup4;
+    private javax.swing.ButtonGroup buttonGroup5;
+    private javax.swing.ButtonGroup buttonGroup6;
+    private javax.swing.ButtonGroup buttonGroup7;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JPasswordField jPasswordSignIn;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JLabel logoLabel;
+    private javax.swing.JLabel nameSurnameLabel;
     // End of variables declaration//GEN-END:variables
 }
