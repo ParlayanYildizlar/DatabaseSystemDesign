@@ -6,10 +6,6 @@ import CorePackage.Database;
 import CorePackage.User;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Image;
-import java.io.File;
-import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
@@ -21,21 +17,19 @@ import javax.swing.JOptionPane;
 public class StartScreen extends javax.swing.JFrame {
 
     public static User account;
-    
-        // Radio Button'ları Tanımlayın
+
+    // Radio Button'ları Tanımlayın
     private ButtonGroup userTypeGroup;
-    
+
     public StartScreen() {
         initComponents();
         setupFrame();
-        debugResourceLoading();
-
+        //debugResourceLoading();
 
         // ButtonGroup ile radio button'ları grupla
         ButtonGroup userTypeGroup = new ButtonGroup();
         userTypeGroup.add(AdminButton);
         userTypeGroup.add(CustomerButton);
-
 
     }
 
@@ -44,7 +38,7 @@ public class StartScreen extends javax.swing.JFrame {
         int newHeight = 657;
         setTitle("Logo Ekranı");
         //setSize(800, 600);
-        setSize(newWidth, newHeight); 
+        setSize(newWidth, newHeight);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -56,91 +50,62 @@ public class StartScreen extends javax.swing.JFrame {
         StartPanel.setLayout(null);
     }
 
-    private void setupLogo() {
-        try {
-            ImageIcon originalIcon = new ImageIcon(getClass().getResource("/images/logo.png"));
-
-            // Logo boyutunu ayarla
-            Image scaledImage = originalIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-            ImageIcon scaledIcon = new ImageIcon(scaledImage);
-
-            // Logo label'ını yapılandır
-            logoLabel.setIcon(scaledIcon);
-
-            // Logo konumunu sol üst köşeye ayarla
-            logoLabel.setBounds(20, 20, 150, 150); // x, y, width, height
-
-            // Eski logo label'ı kaldır ve yenisini ekle
-            StartPanel.removeAll();
-            StartPanel.add(logoLabel);
-
-            // Panel'i yenile
-            StartPanel.revalidate();
-            StartPanel.repaint();
-
-        } catch (Exception e) {
-            System.err.println("Logo yükleme hatası: " + e.getMessage());
-            logoLabel.setText("Logo yüklenemedi!");
-        }
-    }
-
-    private void debugResourceLoading() {
-        // 1. Çalışma dizinini kontrol et
-        System.out.println("Çalışma dizini: " + System.getProperty("user.dir"));
-
-        // 2. Farklı yolları dene ve sonuçları raporla
-        String[] possiblePaths = {
-            "/images/logo.png",
-            "images/logo.png",
-            "../images/logo.png",
-            "./images/logo.png"
-        };
-
-        for (String path : possiblePaths) {
-            System.out.println("\nPath deneniyor: " + path);
-            // Class loader ile dene
-            System.out.println("ClassLoader.getResource: "
-                    + getClass().getClassLoader().getResource(path));
-            // GetResource ile dene
-            System.out.println("Class.getResource: "
-                    + getClass().getResource(path));
-        }
-
-        // 3. Dosya sisteminde fiziksel olarak kontrol et
-        File file = new File("src/images/logo.png");
-        System.out.println("\nDosya fiziksel olarak var mı: " + file.exists());
-        if (file.exists()) {
-            System.out.println("Tam dosya yolu: " + file.getAbsolutePath());
-        }
-
-        // 4. Logo yüklemeyi dene
-        try {
-            // Önce File kullanarak dene
-            if (file.exists()) {
-                ImageIcon logoIcon = new ImageIcon(file.getAbsolutePath());
-                logoLabel.setIcon(logoIcon);
-                System.out.println("Logo dosyadan yüklendi");
-            } // Resource olarak dene
-            else {
-                var resourceUrl = getClass().getResource("/images/logo.png");
-                if (resourceUrl != null) {
-                    ImageIcon logoIcon = new ImageIcon(resourceUrl);
-                    logoLabel.setIcon(logoIcon);
-                    System.out.println("Logo resource'dan yüklendi");
-                } else {
-                    logoLabel.setText("Logo bulunamadı!");
-                    System.err.println("Logo dosyası bulunamadı!");
-                }
-            }
-            logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        } catch (Exception e) {
-            System.err.println("Logo yükleme hatası: " + e);
-            e.printStackTrace();
-            logoLabel.setText("Logo yüklenemedi!");
-        }
-    }
-
+//    private void debugResourceLoading() {
+//        // 1. Çalışma dizinini kontrol et
+//        System.out.println("Çalışma dizini: " + System.getProperty("user.dir"));
+//
+//        // 2. Farklı yolları dene ve sonuçları raporla
+//        String[] possiblePaths = {
+//            "/images/logo.png",
+//            "images/logo.png",
+//            "../images/logo.png",
+//            "./images/logo.png"
+//        };
+//
+//        for (String path : possiblePaths) {
+//            System.out.println("\nPath deneniyor: " + path);
+//            // Class loader ile dene
+//            System.out.println("ClassLoader.getResource: "
+//                    + getClass().getClassLoader().getResource(path));
+//            // GetResource ile dene
+//            System.out.println("Class.getResource: "
+//                    + getClass().getResource(path));
+//        }
+//
+//        // 3. Dosya sisteminde fiziksel olarak kontrol et
+//        File file = new File("src/images/logo.png");
+//        System.out.println("\nDosya fiziksel olarak var mı: " + file.exists());
+//        if (file.exists()) {
+//            System.out.println("Tam dosya yolu: " + file.getAbsolutePath());
+//        }
+//
+//        // 4. Logo yüklemeyi dene
+//        try {
+//            // Önce File kullanarak dene
+//            if (file.exists()) {
+//                ImageIcon logoIcon = new ImageIcon(file.getAbsolutePath());
+//                logoLabel.setIcon(logoIcon);
+//                System.out.println("Logo dosyadan yüklendi");
+//            } // Resource olarak dene
+//            else {
+//                var resourceUrl = getClass().getResource("/images/logo.png");
+//                if (resourceUrl != null) {
+//                    ImageIcon logoIcon = new ImageIcon(resourceUrl);
+//                    logoLabel.setIcon(logoIcon);
+//                    System.out.println("Logo resource'dan yüklendi");
+//                } else {
+//                    logoLabel.setText("Logo bulunamadı!");
+//                    System.err.println("Logo dosyası bulunamadı!");
+//                }
+//            }
+//            logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+//
+//        } catch (Exception e) {
+//            System.err.println("Logo yükleme hatası: " + e);
+//            e.printStackTrace();
+//            logoLabel.setText("Logo yüklenemedi!");
+//        }
+//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -161,7 +126,6 @@ public class StartScreen extends javax.swing.JFrame {
         buttonGroup6 = new javax.swing.ButtonGroup();
         buttonGroup7 = new javax.swing.ButtonGroup();
         StartPanel = new javax.swing.JPanel();
-        logoLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         SignUpPanel = new javax.swing.JPanel();
@@ -188,6 +152,7 @@ public class StartScreen extends javax.swing.JFrame {
         SignInButton = new javax.swing.JButton();
         ForgotPasswordButton = new javax.swing.JRadioButton();
         jPasswordSignIn = new javax.swing.JPasswordField();
+        LogoLabel = new javax.swing.JLabel();
 
         jTextArea1.setColumns(20);
         jTextArea1.setFont(new java.awt.Font("SimSun", 1, 48)); // NOI18N
@@ -210,12 +175,6 @@ public class StartScreen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         StartPanel.setBackground(new java.awt.Color(34, 40, 44));
-
-        logoLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                logoLabelMouseClicked(evt);
-            }
-        });
 
         jLabel1.setBackground(java.awt.SystemColor.controlDkShadow);
         jLabel1.setFont(new java.awt.Font("SimSun", 1, 48)); // NOI18N
@@ -319,7 +278,7 @@ public class StartScreen extends javax.swing.JFrame {
         SignUpPanelLayout.setVerticalGroup(
             SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(SignUpPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(SignUpLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nameSurnameLabel)
@@ -348,8 +307,7 @@ public class StartScreen extends javax.swing.JFrame {
                     .addComponent(AdminButton)
                     .addComponent(CustomerButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(SignUpButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(SignUpButton))
         );
 
         SignInLayeredPanel.setBackground(new java.awt.Color(43, 46, 49));
@@ -400,11 +358,11 @@ public class StartScreen extends javax.swing.JFrame {
                 .addContainerGap(28, Short.MAX_VALUE)
                 .addGroup(SignInLayeredPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(ForgotPasswordButton)
-                    .addComponent(UsernameTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                    .addComponent(UsernameTextField1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(PasswordLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(UsernameLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(SignInLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPasswordSignIn, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(jPasswordSignIn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE))
                 .addGap(32, 32, 32))
         );
         SignInLayeredPanelLayout.setVerticalGroup(
@@ -432,7 +390,7 @@ public class StartScreen extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(203, Short.MAX_VALUE)
+                .addContainerGap(195, Short.MAX_VALUE)
                 .addComponent(SignUpPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(SignInLayeredPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -441,14 +399,12 @@ public class StartScreen extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(SignUpPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(SignInLayeredPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(14, 14, 14)
+                .addComponent(SignInLayeredPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(SignUpPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -459,14 +415,14 @@ public class StartScreen extends javax.swing.JFrame {
             .addGroup(StartPanelLayout.createSequentialGroup()
                 .addGroup(StartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(StartPanelLayout.createSequentialGroup()
-                        .addGap(76, 76, 76)
-                        .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39)
+                        .addGap(83, 83, 83)
+                        .addComponent(LogoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(StartPanelLayout.createSequentialGroup()
-                        .addGap(46, 46, 46)
+                        .addGap(26, 26, 26)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         StartPanelLayout.setVerticalGroup(
             StartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -475,13 +431,13 @@ public class StartScreen extends javax.swing.JFrame {
                     .addGroup(StartPanelLayout.createSequentialGroup()
                         .addGap(88, 88, 88)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(52, 52, 52))
+                        .addGap(58, 58, 58))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StartPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(logoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(LogoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)))
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -509,30 +465,32 @@ public class StartScreen extends javax.swing.JFrame {
 
     private void SignInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignInButtonActionPerformed
         String password = String.valueOf(jPasswordSignIn.getPassword());
-        User acc = Database.loginVerification(UsernameTextField1.getText(), password);
+        User user = Database.loginVerification(UsernameTextField1.getText(), password);
 
-        if (acc == null) {
+        if (user == null) {
             JOptionPane.showMessageDialog(this, "This user does not exist!",
                     "User Not Found", JOptionPane.ERROR_MESSAGE);
-        } else if (acc instanceof Admin admin) {
-            StartScreen.account = acc;
+        } else if (user instanceof Admin admin) {
+            StartScreen.account = user;
             UsernameTextField1.setText("");
             jPasswordSignIn.setText("");
 
             AdminScreen adminPage = new AdminScreen(admin);
-            adminPage.show();
+            adminPage.setVisible(true);
             dispose();
 
-        } else if (acc instanceof Customer) {
-            StartScreen.account = acc;
+        } else if (user instanceof Customer) {
+            StartScreen.account = user;
             UsernameTextField1.setText("");
             jPasswordSignIn.setText("");
 
-            CustomerScreen customerPage = new CustomerScreen((Customer) acc);
-            customerPage.show();
+            CustomerScreen customerPage = new CustomerScreen((Customer) user);
+            customerPage.setVisible(true);
             dispose();
 
         }
+
+
     }//GEN-LAST:event_SignInButtonActionPerformed
 
 
@@ -576,19 +534,14 @@ public class StartScreen extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Username Already Exist.",
                     "Failure", JOptionPane.INFORMATION_MESSAGE);
 
-3
             /*
             AuthenticationPageForAdmin authenticationPage = new AuthenticationPageForAdmin(NameSurnameTextField.getText(),
                     UsernameTextField.getText(), jPasswordField1.getText());
             authenticationPage.show();
             dispose();
-            */
+             */
         }
     }//GEN-LAST:event_AdminButtonActionPerformed
-
-    private void logoLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoLabelMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_logoLabelMouseClicked
 
     private void SignUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignUpButtonActionPerformed
         if (UsernameTextField.getText().equals("") || jPasswordField1.getText().equals("")
@@ -606,7 +559,7 @@ public class StartScreen extends javax.swing.JFrame {
             return;
         }
 
-        System.out.println("AdminButton Selected: " + AdminButton.isSelected()); // Seçim kontrolü
+        //System.out.println("AdminButton Selected: " + AdminButton.isSelected()); // Seçim kontrolü
 
         if (AdminButton.isSelected()) {
             JOptionPane.showMessageDialog(this, "Please enter the verification code given to you to verify that you are an admin.",
@@ -626,10 +579,9 @@ public class StartScreen extends javax.swing.JFrame {
                         "Error", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Please select a valid user type.",
-                    "Failure", JOptionPane.INFORMATION_MESSAGE);
-        }
+        } else if(CustomerButton.isSelected()){
+            JOptionPane.showMessageDialog(this, "Customer account created !");
+            }
 
 
     }//GEN-LAST:event_SignUpButtonActionPerformed
@@ -662,6 +614,11 @@ public class StartScreen extends javax.swing.JFrame {
             new StartScreen().setVisible(true);
         });
     }
+
+//    public static void testInıt(){
+//        Customer customer1 = new Customer("a", "123", "a", "1230", "123");
+//    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AccTypeLabel;
     private javax.swing.JRadioButton AdminButton;
@@ -669,6 +626,7 @@ public class StartScreen extends javax.swing.JFrame {
     private javax.swing.JRadioButton ForgotPasswordButton;
     private javax.swing.JLabel IDNumberLabel;
     private javax.swing.JTextField IDNumberTextField;
+    private javax.swing.JLabel LogoLabel;
     private javax.swing.JTextField NameSurnameTextField;
     private javax.swing.JLabel PasswordLabel;
     private javax.swing.JLabel PasswordLabel1;
@@ -699,7 +657,6 @@ public class StartScreen extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPasswordSignIn;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JLabel logoLabel;
     private javax.swing.JLabel nameSurnameLabel;
     // End of variables declaration//GEN-END:variables
 }
