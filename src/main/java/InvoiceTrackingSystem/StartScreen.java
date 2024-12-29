@@ -4,23 +4,15 @@ import CorePackage.Admin;
 import CorePackage.Customer;
 import CorePackage.Database;
 import CorePackage.User;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.MediaTracker;
 import java.io.File;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
 
 /**
  *
@@ -38,33 +30,26 @@ public class StartScreen extends javax.swing.JFrame {
         setupFrame();
         debugResourceLoading();
 
-        // Radio Button'ların tanımlanması
-        JRadioButton AdminButton = new JRadioButton("Admin");
-        JRadioButton CustomerButton = new JRadioButton("Customer");
 
         // ButtonGroup ile radio button'ları grupla
         ButtonGroup userTypeGroup = new ButtonGroup();
         userTypeGroup.add(AdminButton);
         userTypeGroup.add(CustomerButton);
 
-        // Radio Button'ları Panel veya Frame'e Ekleyin
-        jPanel1.setLayout(new FlowLayout()); // Yerleşim yöneticisi ayarı
-        jPanel1.add(AdminButton);
-        jPanel1.add(CustomerButton);
 
     }
 
     private void setupFrame() {
-        int newWidth = 200;  // Bu değeri artırıp azaltabilirsiniz
-        int newHeight = 100;
+        int newWidth = 965;  // Bu değeri artırıp azaltabilirsiniz
+        int newHeight = 657;
         setTitle("Logo Ekranı");
         //setSize(800, 600);
-        setSize(newWidth + 100, newHeight + 100); // 100 değerini artırıp azaltabilirsiniz
+        setSize(newWidth, newHeight); 
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // Panel boyutunu ve arka plan rengini ayarla
-        StartPanel.setPreferredSize(new Dimension(800, 600));
+        StartPanel.setPreferredSize(new Dimension(965, 657));
         StartPanel.setBackground(new Color(34, 40, 44));
 
         // Absolute positioning için null layout kullan
@@ -591,15 +576,13 @@ public class StartScreen extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Username Already Exist.",
                     "Failure", JOptionPane.INFORMATION_MESSAGE);
 
-        } else {
-            JOptionPane.showMessageDialog(this, "Please enter the verification code given to you to verify that you are an admin.",
-                    "Authentication", JOptionPane.INFORMATION_MESSAGE);
-
+3
+            /*
             AuthenticationPageForAdmin authenticationPage = new AuthenticationPageForAdmin(NameSurnameTextField.getText(),
                     UsernameTextField.getText(), jPasswordField1.getText());
             authenticationPage.show();
             dispose();
-
+            */
         }
     }//GEN-LAST:event_AdminButtonActionPerformed
 
@@ -633,6 +616,7 @@ public class StartScreen extends javax.swing.JFrame {
                 AuthenticationPageForAdmin authenticationPage = new AuthenticationPageForAdmin(
                         NameSurnameTextField.getText(),
                         UsernameTextField.getText(),
+                        PasswordLabel.getText(),
                         PhoneNoTextField.getText(),
                         IDNumberLabel.getText());
                 authenticationPage.setVisible(true); // Pencereyi görünür yap

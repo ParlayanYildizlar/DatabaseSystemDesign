@@ -6,9 +6,13 @@ package InvoiceTrackingSystem;
 
 import CorePackage.Admin;
 import CorePackage.Database;
+import java.awt.HeadlessException;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 /**
@@ -24,39 +28,43 @@ public class AuthenticationPageForAdmin extends javax.swing.JFrame {
     /**
      * Creates new form AutheticationPageForAdmin
      */
-    public AuthenticationPageForAdmin() {
+    public AuthenticationPageForAdmin(String nameSurname, String username, String password,String phone,String idNumber) {
         initComponents();
         setLocationRelativeTo(null);
 
         this.nameSurname = nameSurname;
         this.username = username;
         this.password = password;
-
-    }
-
-    public AuthenticationPageForAdmin(String name, String username, String phone, String idNumber) {
-        // JFrame ayarları
-        setTitle("Admin Authentication");
+        
+         setTitle("Admin Authentication Page");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // İçerik
-        JLabel label = new JLabel("<html>Name: " + name + "<br>Username: " + username
-                + "<br>Phone: " + phone + "<br>ID: " + idNumber + "</html>");
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        add(label);
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
 
-        // Görünürlük ayarı
+       
+
+        add(panel);
         setVisible(true);
-    }
 
-    AuthenticationPageForAdmin(String text, String text0, String text1) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+    
 
-    AuthenticationPageForAdmin(String text, String text0, String text1, String text2, String text3) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+     public AuthenticationPageForAdmin() {
+        setTitle("Admin Authentication Page");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+
+       
+
+        add(panel);
+        setVisible(true);
     }
 
     /**
@@ -195,7 +203,8 @@ public class AuthenticationPageForAdmin extends javax.swing.JFrame {
                     "Wrong Authentication Code", JOptionPane.ERROR_MESSAGE);
 
             // Kayıt ekranına yönlendir
-            startScreen.setVisible(true); // Eski `show()` yerine
+            //startScreen.setVisible(true); // Eski `show()` yerine
+            startScreen.show();
             dispose(); // Mevcut pencereyi kapat
         }
     }//GEN-LAST:event_authenticationButtonActionPerformed
