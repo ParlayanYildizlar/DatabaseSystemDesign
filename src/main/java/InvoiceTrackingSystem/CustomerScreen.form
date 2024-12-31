@@ -48,31 +48,31 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="MenuButton" min="-2" pref="60" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="328" max="-2" attributes="0"/>
+                          <Component id="RequestsButton" min="-2" pref="121" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
+                          <Component id="AnnouncementsButton" min="-2" pref="135" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="215" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jLabel1" min="-2" pref="510" max="-2" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <Component id="InformationButton" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                                  <Component id="SubscriptionsButton" min="-2" pref="121" max="-2" attributes="0"/>
+                                  <Component id="SubscriptionsButton" min="-2" pref="137" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="BillsButton" min="-2" pref="121" max="-2" attributes="0"/>
+                                  <Component id="InvoicesButton" min="-2" pref="121" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="jLabel1" min="-2" pref="471" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="310" max="-2" attributes="0"/>
-                          <Component id="RequestsButton" min="-2" pref="121" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
-                          <Component id="AnnouncementsButton" min="-2" pref="121" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="MenuButton" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="279" max="32767" attributes="0"/>
+                  <EmptySpace pref="240" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -80,14 +80,14 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="MenuButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
+                  <Component id="MenuButton" min="-2" pref="28" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" pref="97" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="InformationButton" alignment="3" min="-2" pref="114" max="-2" attributes="0"/>
                       <Component id="SubscriptionsButton" alignment="3" min="-2" pref="114" max="-2" attributes="0"/>
-                      <Component id="BillsButton" alignment="3" min="-2" pref="114" max="-2" attributes="0"/>
+                      <Component id="InvoicesButton" alignment="3" min="-2" pref="114" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -103,7 +103,7 @@
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="33" green="33" red="0" type="rgb"/>
+              <Color blue="2c" green="28" red="22" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="SimSun" size="50" style="1"/>
@@ -129,13 +129,11 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="MenuButton">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Menu"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JButton" name="InformationButton">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SimSun-ExtG" size="14" style="0"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Personal Information"/>
           </Properties>
           <Events>
@@ -144,26 +142,48 @@
         </Component>
         <Component class="javax.swing.JButton" name="SubscriptionsButton">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SimSun-ExtG" size="14" style="0"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Subscriptions"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SubscriptionsButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="BillsButton">
+        <Component class="javax.swing.JButton" name="InvoicesButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Bills"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SimSun-ExtG" size="14" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Invoices"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="RequestsButton">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SimSun-ExtG" size="14" style="0"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Requests"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="AnnouncementsButton">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SimSun-ExtG" size="14" style="0"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Announcements"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="MenuButton">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Icons/Menu30.png"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MenuButtonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
