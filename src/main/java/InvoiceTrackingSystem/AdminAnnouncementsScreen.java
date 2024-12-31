@@ -37,7 +37,7 @@ public class AdminAnnouncementsScreen extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         SelectjButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        AdminAnnouncementTable = new javax.swing.JTable();
         SendjButton = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         MenuButton = new javax.swing.JButton();
@@ -46,25 +46,33 @@ public class AdminAnnouncementsScreen extends javax.swing.JFrame {
 
         AdminAnnouncementsPanel.setBackground(new java.awt.Color(34, 40, 44));
 
+        AddressjComboBox.setFont(new java.awt.Font("SimSun-ExtG", 0, 12)); // NOI18N
+
+        jLabel1.setFont(new java.awt.Font("SimSun-ExtG", 0, 12)); // NOI18N
         jLabel1.setText("Address:");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 2, 10)); // NOI18N
         jLabel2.setText("*Please, select an address for announcement.");
 
+        topicJList.setFont(new java.awt.Font("SimSun-ExtG", 0, 12)); // NOI18N
         jScrollPane1.setViewportView(topicJList);
 
+        jLabel3.setFont(new java.awt.Font("SimSun-ExtG", 0, 12)); // NOI18N
         jLabel3.setText("Announcements Topic:");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 2, 10)); // NOI18N
         jLabel4.setText("*Please select the topic of your announcements.");
 
-        jLabel5.setFont(new java.awt.Font("SimSun", 1, 48)); // NOI18N
-        jLabel5.setText("Announcements Page");
+        jLabel5.setFont(new java.awt.Font("SimSun-ExtG", 1, 48)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("ANNOUNCEMENTS");
+        jLabel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        SelectjButton.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        SelectjButton.setFont(new java.awt.Font("SimSun-ExtG", 0, 18)); // NOI18N
         SelectjButton.setText("Select");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        AdminAnnouncementTable.setFont(new java.awt.Font("SimSun-ExtG", 0, 12)); // NOI18N
+        AdminAnnouncementTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -75,9 +83,9 @@ public class AdminAnnouncementsScreen extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(AdminAnnouncementTable);
 
-        SendjButton.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        SendjButton.setFont(new java.awt.Font("SimSun-ExtG", 0, 18)); // NOI18N
         SendjButton.setText("Send");
         SendjButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -89,6 +97,7 @@ public class AdminAnnouncementsScreen extends javax.swing.JFrame {
         jLabel6.setText("*Customers to send the announcement:");
 
         MenuButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Menu30.png"))); // NOI18N
+        MenuButton.setPreferredSize(new java.awt.Dimension(36, 36));
         MenuButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuButtonActionPerformed(evt);
@@ -102,64 +111,53 @@ public class AdminAnnouncementsScreen extends javax.swing.JFrame {
             .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
                 .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
-                        .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
-                                .addGap(172, 172, 172)
-                                .addComponent(jLabel2))
-                            .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
-                                .addGap(101, 101, 101)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(AddressjComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 95, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AdminAnnouncementsPanelLayout.createSequentialGroup()
-                        .addGap(0, 84, Short.MAX_VALUE)
+                        .addGap(45, 45, 45)
                         .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(18, 18, 18)
-                .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, AdminAnnouncementsPanelLayout.createSequentialGroup()
-                            .addComponent(jLabel4)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(SelectjButton, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(SendjButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(106, Short.MAX_VALUE))
-            .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
-                .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
+                                .addGap(71, 71, 71)
+                                .addComponent(jLabel2))
+                            .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(AddressjComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(82, 82, 82)
+                                .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, AdminAnnouncementsPanelLayout.createSequentialGroup()
+                                            .addComponent(jLabel4)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(SelectjButton, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(SendjButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
-                        .addGap(239, 239, 239)
-                        .addComponent(jLabel5))
+                        .addGap(255, 255, 255)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(MenuButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(MenuButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
         AdminAnnouncementsPanelLayout.setVerticalGroup(
             AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(MenuButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(7, 7, 7)
+                .addComponent(MenuButton, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel5)
+                .addGap(71, 71, 71)
+                .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(AddressjComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(AddressjComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6)
-                        .addContainerGap(42, Short.MAX_VALUE))
-                    .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
-                        .addGap(61, 61, 61)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -171,8 +169,10 @@ public class AdminAnnouncementsScreen extends javax.swing.JFrame {
                                 .addGap(15, 15, 15)
                                 .addComponent(SelectjButton)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(SendjButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(SendjButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6)
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -272,6 +272,7 @@ public class AdminAnnouncementsScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> AddressjComboBox;
+    private javax.swing.JTable AdminAnnouncementTable;
     private javax.swing.JPanel AdminAnnouncementsPanel;
     private javax.swing.JButton MenuButton;
     private javax.swing.JButton SelectjButton;
@@ -284,7 +285,6 @@ public class AdminAnnouncementsScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JList<String> topicJList;
     // End of variables declaration//GEN-END:variables
 }
