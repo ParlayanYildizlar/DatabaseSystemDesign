@@ -42,45 +42,68 @@ public class CustomerInformationScreen extends javax.swing.JFrame {
         AddressLabel = new javax.swing.JLabel();
         SaveButton = new javax.swing.JButton();
         DeleteAddressButton = new javax.swing.JButton();
-        NameTextField = new javax.swing.JTextField();
         UsernameTextField = new javax.swing.JTextField();
         PhoneTextField = new javax.swing.JTextField();
         EmailTextField = new javax.swing.JTextField();
-        AddAddresTextField = new javax.swing.JTextField();
         AddAddressButton = new javax.swing.JButton();
+        ChangeAddressBttn = new javax.swing.JButton();
+        SurnameTextField = new javax.swing.JTextField();
+        NameTextField2 = new javax.swing.JTextField();
+        ChangePasswordBttn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(34, 40, 44));
         jPanel1.setPreferredSize(new java.awt.Dimension(965, 657));
+        jPanel1.setLayout(null);
 
-        MenuButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Menu30.png"))); // NOI18N
+        MenuButton.setText("Menu");
+        jPanel1.add(MenuButton);
+        MenuButton.setBounds(6, 6, 60, 23);
 
         jLabel1.setFont(new java.awt.Font("SimSun-ExtG", 1, 32)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("PERSONAL INFORMATION");
         jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(146, 63, 669, 41);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jLabel2.setText("Name:");
+        jPanel2.setLayout(null);
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setText("Name - Surname:");
+        jPanel2.add(jLabel2);
+        jLabel2.setBounds(70, 50, 158, 22);
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Username:");
+        jPanel2.add(jLabel3);
+        jLabel3.setBounds(70, 90, 158, 20);
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("National ID Number:");
+        jPanel2.add(jLabel4);
+        jLabel4.setBounds(70, 130, 230, 20);
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setText("Addresses");
+        jPanel2.add(jLabel7);
+        jLabel7.setBounds(70, 265, 158, 20);
 
-        NationalIdLabel.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        NationalIdLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         NationalIdLabel.setText("jLabel5");
+        jPanel2.add(NationalIdLabel);
+        NationalIdLabel.setBounds(330, 130, 291, 20);
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setText("Phone Number:");
+        jPanel2.add(jLabel5);
+        jLabel5.setBounds(70, 170, 158, 20);
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setText("Email:");
+        jPanel2.add(jLabel6);
+        jLabel6.setBounds(70, 210, 158, 20);
 
         AddressList.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         AddressList.setModel(new javax.swing.AbstractListModel<String>() {
@@ -90,133 +113,67 @@ public class CustomerInformationScreen extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(AddressList);
 
-        AddressLabel.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jPanel2.add(jScrollPane1);
+        jScrollPane1.setBounds(70, 299, 230, 110);
+
+        AddressLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         AddressLabel.setText("jLabel8");
+        jPanel2.add(AddressLabel);
+        AddressLabel.setBounds(330, 300, 290, 100);
 
         SaveButton.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         SaveButton.setText("Save");
+        jPanel2.add(SaveButton);
+        SaveButton.setBounds(590, 500, 72, 32);
 
         DeleteAddressButton.setText("Delete Address");
+        jPanel2.add(DeleteAddressButton);
+        DeleteAddressButton.setBounds(498, 430, 120, 23);
 
-        NameTextField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        UsernameTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        UsernameTextField.setText("jTextField2");
+        jPanel2.add(UsernameTextField);
+        UsernameTextField.setBounds(330, 87, 291, 20);
 
-        UsernameTextField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        PhoneTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        PhoneTextField.setText("jTextField3");
+        jPanel2.add(PhoneTextField);
+        PhoneTextField.setBounds(330, 170, 291, 20);
 
-        PhoneTextField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-
-        EmailTextField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        EmailTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        EmailTextField.setText("jTextField4");
+        jPanel2.add(EmailTextField);
+        EmailTextField.setBounds(330, 210, 291, 20);
 
         AddAddressButton.setText("Add Address");
+        jPanel2.add(AddAddressButton);
+        AddAddressButton.setBounds(70, 430, 120, 23);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(70, 70, 70)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(DeleteAddressButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(62, 62, 62)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(AddressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(EmailTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(PhoneTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(UsernameTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(NameTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(NationalIdLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE))))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(353, 353, 353)
-                                .addComponent(SaveButton)))
-                        .addContainerGap(16, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(AddAddresTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(AddAddressButton)
-                        .addGap(33, 33, 33))))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(NameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(UsernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(NationalIdLabel))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(PhoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(EmailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(AddAddresTextField)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 50, Short.MAX_VALUE)
-                        .addComponent(AddAddressButton)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AddressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(DeleteAddressButton)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(SaveButton)))
-                .addGap(15, 15, 15))
-        );
+        ChangeAddressBttn.setText("Change Address");
+        jPanel2.add(ChangeAddressBttn);
+        ChangeAddressBttn.setBounds(370, 430, 120, 23);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(MenuButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(150, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(MenuButton)
-                        .addGap(65, 65, 65))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        SurnameTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        SurnameTextField.setText("jTextField1");
+        jPanel2.add(SurnameTextField);
+        SurnameTextField.setBounds(490, 50, 130, 20);
+
+        NameTextField2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        NameTextField2.setText("jTextField1");
+        NameTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NameTextField2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(NameTextField2);
+        NameTextField2.setBounds(330, 50, 150, 20);
+
+        ChangePasswordBttn.setText("Change Password");
+        jPanel2.add(ChangePasswordBttn);
+        ChangePasswordBttn.setBounds(70, 510, 130, 23);
+
+        jPanel1.add(jPanel2);
+        jPanel2.setBounds(146, 122, 0, 0);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -231,6 +188,10 @@ public class CustomerInformationScreen extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void NameTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_NameTextField2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -268,17 +229,19 @@ public class CustomerInformationScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField AddAddresTextField;
     private javax.swing.JButton AddAddressButton;
     private javax.swing.JLabel AddressLabel;
     private javax.swing.JList<String> AddressList;
+    private javax.swing.JButton ChangeAddressBttn;
+    private javax.swing.JButton ChangePasswordBttn;
     private javax.swing.JButton DeleteAddressButton;
     private javax.swing.JTextField EmailTextField;
     private javax.swing.JButton MenuButton;
-    private javax.swing.JTextField NameTextField;
+    private javax.swing.JTextField NameTextField2;
     private javax.swing.JLabel NationalIdLabel;
     private javax.swing.JTextField PhoneTextField;
     private javax.swing.JButton SaveButton;
+    private javax.swing.JTextField SurnameTextField;
     private javax.swing.JTextField UsernameTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

@@ -288,12 +288,11 @@ public class InterruptionScreen extends javax.swing.JFrame {
         //        contentPane.repaint();
     }//GEN-LAST:event_MenuButtonActionPerformed
 
-    private void MakeInterruptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MakeInterruptActionPerformed
-       
+    private void SignInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignInButtonActionPerformed
 
-    }//GEN-LAST:event_MakeInterruptActionPerformed
+    }//GEN-LAST:event_SignInButtonActionPerformed
 
-    private void RemoveInterruptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveInterruptActionPerformed
+    private void SignInButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignInButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_RemoveInterruptActionPerformed
 
