@@ -181,7 +181,7 @@ public class AdminSideBar extends javax.swing.JFrame {
         SubscriptionsButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Subscriptions.png"))); // NOI18N
         SubscriptionsButton2.setText("Subscriptions");
 
-        jPanel2.setBackground(new java.awt.Color(34, 40, 44));
+        jPanel2.setBackground(new java.awt.Color(78, 80, 82));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Menu30.png"))); // NOI18N
 
