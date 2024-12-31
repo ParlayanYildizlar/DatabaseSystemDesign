@@ -26,21 +26,278 @@ public class InterruptionScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        AdminAnnouncementsPanel = new javax.swing.JPanel();
+        neighbourhoodjComboBox = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        MenuButton = new javax.swing.JButton();
+        CityjComboBox = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        userIDjTextField = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        SignInButton = new javax.swing.JButton();
+        SignInButton1 = new javax.swing.JButton();
+        ElectricityjRadioButton = new javax.swing.JRadioButton();
+        waterjRadioButton = new javax.swing.JRadioButton();
+        NaturalGasjRadioButton = new javax.swing.JRadioButton();
+        jLabel6 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        AdminAnnouncementsPanel.setBackground(new java.awt.Color(34, 40, 44));
+
+        jLabel1.setText("Neighbourhood:");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 2, 10)); // NOI18N
+        jLabel2.setText("*Please choose which service will be interrupted?");
+
+        jLabel5.setFont(new java.awt.Font("SimSun", 1, 48)); // NOI18N
+        jLabel5.setText("Interruption Page");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Customer ID", "First Name", "Last Name", "Address"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(jTable1);
+
+        MenuButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Menu30.png"))); // NOI18N
+        MenuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("City:");
+
+        jLabel4.setText("Customer ID:");
+
+        SignInButton.setFont(new java.awt.Font("SimSun-ExtB", 1, 14)); // NOI18N
+        SignInButton.setText("Make Interrupt");
+        SignInButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SignInButtonActionPerformed(evt);
+            }
+        });
+
+        SignInButton1.setFont(new java.awt.Font("SimSun-ExtB", 1, 14)); // NOI18N
+        SignInButton1.setText("Remove Interrupt");
+        SignInButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SignInButton1ActionPerformed(evt);
+            }
+        });
+
+        ElectricityjRadioButton.setText("Electricity");
+
+        waterjRadioButton.setText("Water");
+
+        NaturalGasjRadioButton.setText("Natural Gas");
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 2, 10)); // NOI18N
+        jLabel6.setText("*Please select the topic of your announcements.");
+
+        javax.swing.GroupLayout AdminAnnouncementsPanelLayout = new javax.swing.GroupLayout(AdminAnnouncementsPanel);
+        AdminAnnouncementsPanel.setLayout(AdminAnnouncementsPanelLayout);
+        AdminAnnouncementsPanelLayout.setHorizontalGroup(
+            AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
+                .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(SignInButton)
+                        .addGap(25, 25, 25)
+                        .addComponent(SignInButton1))
+                    .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
+                            .addGap(239, 239, 239)
+                            .addComponent(jLabel5))
+                        .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
+                            .addGap(24, 24, 24)
+                            .addComponent(MenuButton))
+                        .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, AdminAnnouncementsPanelLayout.createSequentialGroup()
+                                .addGap(33, 33, 33)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 891, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(userIDjTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AdminAnnouncementsPanelLayout.createSequentialGroup()
+                                        .addComponent(ElectricityjRadioButton)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(waterjRadioButton)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(NaturalGasjRadioButton))
+                                    .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
+                                        .addComponent(CityjComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(32, 32, 32)
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(neighbourhoodjComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                .addContainerGap(33, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AdminAnnouncementsPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(58, 58, 58))
+            .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jLabel6)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        AdminAnnouncementsPanelLayout.setVerticalGroup(
+            AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(MenuButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ElectricityjRadioButton)
+                    .addComponent(waterjRadioButton)
+                    .addComponent(NaturalGasjRadioButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(neighbourhoodjComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(CityjComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(userIDjTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(38, 38, 38)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(SignInButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(SignInButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE))
+            .addGroup(AdminAnnouncementsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(AdminAnnouncementsPanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jLabel6)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(AdminAnnouncementsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(AdminAnnouncementsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void MenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuButtonActionPerformed
+        //        // Kaynağı yükle
+        //        URL resourceURL = this.getClass().getResource("/Icons/MenulIcon.png");
+        //        if (resourceURL == null) {
+            //            System.out.println("Kaynak dosyası bulunamadı!");
+            //        } else {
+            //            System.out.println("Kaynak dosyası bulundu: " + resourceURL.toExternalForm());
+            //        }
+        //        InputStream is = getClass().getResourceAsStream("/Icons/MenulIcon.png");
+        //        if (is == null) {
+            //            JOptionPane.showMessageDialog(this, "Kaynak dosyası bulunamadı!", "Hata", JOptionPane.ERROR_MESSAGE);
+            //        } else {
+            //            Image img = null;
+            //            try {
+                //                img = new ImageIcon(ImageIO.read(is)).getImage();
+                //            } catch (IOException ex) {
+                //                Logger.getLogger(AdminScreen.class.getName()).log(Level.SEVERE, null, ex);
+                //            }
+            //            JButton btnNewButton = new JButton(new ImageIcon(img));
+            //            contentPane.add(btnNewButton);
+            //            contentPane.revalidate();
+            //            contentPane.repaint();
+            //        }
+        //
+        //        // Resmi yükle ve boyutlandır
+        //        Image img = new ImageIcon(resourceURL).getImage();
+        //        Image scaledImg = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH); // 50x50 boyutunda
+        //
+        //        // Buton oluştur ve ikon ekle
+        //        JButton MenuButton = new JButton();
+        //        MenuButton.setIcon(new ImageIcon(scaledImg));
+        //        MenuButton.setBounds(100, 100, 100, 100); // Daha büyük boyut
+        //        MenuButton.setBackground(Color.WHITE); // Arka planı değiştir
+        //
+        //        // Butonu ekle
+        //        contentPane.add(MenuButton);
+        //
+        //        // Görünümü yenile
+        //        contentPane.revalidate();
+        //        contentPane.repaint();
+    }//GEN-LAST:event_MenuButtonActionPerformed
+
+    private void SignInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignInButtonActionPerformed
+        String password = String.valueOf(jPasswordSignIn.getPassword());
+        User user = Database.loginVerification(UsernameTextField1.getText(), password);
+
+        if (user == null) {
+            JOptionPane.showMessageDialog(this, "This user does not exist!",
+                "User Not Found", JOptionPane.ERROR_MESSAGE);
+        } else if (user instanceof Admin admin) {
+            StartScreen.account = user;
+            UsernameTextField1.setText("");
+            jPasswordSignIn.setText("");
+
+            AdminScreen adminPage = new AdminScreen(admin);
+            adminPage.setVisible(true);
+            dispose();
+            //asdfgh
+
+        } else if (user instanceof Customer) {
+            StartScreen.account = user;
+            UsernameTextField1.setText("");
+            jPasswordSignIn.setText("");
+
+            CustomerScreen customerPage = new CustomerScreen((Customer) user);
+            customerPage.setVisible(true);
+            dispose();
+
+        }
+
+    }//GEN-LAST:event_SignInButtonActionPerformed
+
+    private void SignInButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignInButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SignInButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +335,24 @@ public class InterruptionScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel AdminAnnouncementsPanel;
+    private javax.swing.JComboBox<String> CityjComboBox;
+    private javax.swing.JRadioButton ElectricityjRadioButton;
+    private javax.swing.JButton MenuButton;
+    private javax.swing.JRadioButton NaturalGasjRadioButton;
+    private javax.swing.JButton SignInButton;
+    private javax.swing.JButton SignInButton1;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JComboBox<String> neighbourhoodjComboBox;
+    private javax.swing.JTextField userIDjTextField;
+    private javax.swing.JRadioButton waterjRadioButton;
     // End of variables declaration//GEN-END:variables
 }
