@@ -4,17 +4,70 @@
  */
 package InvoiceTrackingSystem;
 
+import CorePackage.Address;
+import CorePackage.Announcement;
+import CorePackage.Customer;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author bayra
  */
 public class CustomerAnnouncementsScreen extends javax.swing.JFrame {
 
+    private Customer customer;
+
     /**
      * Creates new form AnnouncementsScreen
      */
     public CustomerAnnouncementsScreen() {
         initComponents();
+    }
+
+    public CustomerAnnouncementsScreen(Customer customer) {
+        this.customer = customer;
+        fetchCustomerDetailsFromDatabase();
+        initComponents();
+        loadAnnouncements();
+    }
+
+    private void fetchCustomerDetailsFromDatabase() {
+        if (customer != null && customer.getUsername() != null) {
+            Customer fullCustomer = Customer.getCustomerByUsername(customer.getUsername());
+            if (fullCustomer != null) {
+                this.customer = fullCustomer;
+            } else {
+                System.out.println("Customer details not found in the database.");
+            }
+        } else {
+            System.out.println("Invalid customer username.");
+        }
+    }
+
+    private void loadAnnouncements() {
+        List<Announcement> announcements = new ArrayList<>();
+
+        for (Address address : customer.getAddresses()) {
+            int neighborhoodId = address.getNeighborhood().getNeighborhoodId();
+            announcements.addAll(Announcement.getAnnouncementsByNeighborhoodId(neighborhoodId));
+        }
+
+        updateAnnouncementsTable(announcements);
+    }
+
+    private void updateAnnouncementsTable(List<Announcement> announcements) {
+        DefaultTableModel model = (DefaultTableModel) AnnouncementsTable.getModel();
+        model.setRowCount(0);
+
+        for (Announcement announcement : announcements) {
+            model.addRow(new Object[]{
+                announcement.getCreatedAt(),
+                announcement.getAnnouncementType(),
+                announcement.getAnnouncementContent()
+            });
+        }
     }
 
     /**
@@ -26,20 +79,11 @@ public class CustomerAnnouncementsScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        MenuButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         MenuButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         AnnouncementsTable = new javax.swing.JTable();
-
-        MenuButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Menu30.png"))); // NOI18N
-        MenuButton.setPreferredSize(new java.awt.Dimension(36, 36));
-        MenuButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MenuButtonActionPerformed(evt);
-            }
-        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,11 +91,10 @@ public class CustomerAnnouncementsScreen extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("SimSun-ExtG", 0, 48)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Announcements.png"))); // NOI18N
         jLabel1.setText("  ANNOUNCEMENTS");
         jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        MenuButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Menu30.png"))); // NOI18N
+        MenuButton1.setText("Menu");
         MenuButton1.setPreferredSize(new java.awt.Dimension(36, 36));
         MenuButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -61,17 +104,17 @@ public class CustomerAnnouncementsScreen extends javax.swing.JFrame {
 
         AnnouncementsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Date", "Announcements"
+                "Date", "Announcement Type", "Announcements"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -80,8 +123,8 @@ public class CustomerAnnouncementsScreen extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(AnnouncementsTable);
         if (AnnouncementsTable.getColumnModel().getColumnCount() > 0) {
-            AnnouncementsTable.getColumnModel().getColumn(0).setMinWidth(65);
-            AnnouncementsTable.getColumnModel().getColumn(0).setMaxWidth(70);
+            AnnouncementsTable.getColumnModel().getColumn(0).setMinWidth(120);
+            AnnouncementsTable.getColumnModel().getColumn(0).setMaxWidth(120);
         }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -94,11 +137,11 @@ public class CustomerAnnouncementsScreen extends javax.swing.JFrame {
                         .addGap(189, 189, 189)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 611, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(MenuButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(55, 55, 55)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 875, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 875, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(MenuButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(58, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -129,88 +172,10 @@ public class CustomerAnnouncementsScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void MenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuButtonActionPerformed
-        //        // Kaynağı yükle
-        //        URL resourceURL = this.getClass().getResource("/Icons/MenulIcon.png");
-        //        if (resourceURL == null) {
-            //            System.out.println("Kaynak dosyası bulunamadı!");
-            //        } else {
-            //            System.out.println("Kaynak dosyası bulundu: " + resourceURL.toExternalForm());
-            //        }
-        //        InputStream is = getClass().getResourceAsStream("/Icons/MenulIcon.png");
-        //        if (is == null) {
-            //            JOptionPane.showMessageDialog(this, "Kaynak dosyası bulunamadı!", "Hata", JOptionPane.ERROR_MESSAGE);
-            //        } else {
-            //            Image img = null;
-            //            try {
-                //                img = new ImageIcon(ImageIO.read(is)).getImage();
-                //            } catch (IOException ex) {
-                //                Logger.getLogger(AdminScreen.class.getName()).log(Level.SEVERE, null, ex);
-                //            }
-            //            JButton btnNewButton = new JButton(new ImageIcon(img));
-            //            contentPane.add(btnNewButton);
-            //            contentPane.revalidate();
-            //            contentPane.repaint();
-            //        }
-        //
-        //        // Resmi yükle ve boyutlandır
-        //        Image img = new ImageIcon(resourceURL).getImage();
-        //        Image scaledImg = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH); // 50x50 boyutunda
-        //
-        //        // Buton oluştur ve ikon ekle
-        //        JButton MenuButton = new JButton();
-        //        MenuButton.setIcon(new ImageIcon(scaledImg));
-        //        MenuButton.setBounds(100, 100, 100, 100); // Daha büyük boyut
-        //        MenuButton.setBackground(Color.WHITE); // Arka planı değiştir
-        //
-        //        // Butonu ekle
-        //        contentPane.add(MenuButton);
-        //
-        //        // Görünümü yenile
-        //        contentPane.revalidate();
-        //        contentPane.repaint();
-    }//GEN-LAST:event_MenuButtonActionPerformed
-
     private void MenuButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuButton1ActionPerformed
-        //        // Kaynağı yükle
-        //        URL resourceURL = this.getClass().getResource("/Icons/MenulIcon.png");
-        //        if (resourceURL == null) {
-            //            System.out.println("Kaynak dosyası bulunamadı!");
-            //        } else {
-            //            System.out.println("Kaynak dosyası bulundu: " + resourceURL.toExternalForm());
-            //        }
-        //        InputStream is = getClass().getResourceAsStream("/Icons/MenulIcon.png");
-        //        if (is == null) {
-            //            JOptionPane.showMessageDialog(this, "Kaynak dosyası bulunamadı!", "Hata", JOptionPane.ERROR_MESSAGE);
-            //        } else {
-            //            Image img = null;
-            //            try {
-                //                img = new ImageIcon(ImageIO.read(is)).getImage();
-                //            } catch (IOException ex) {
-                //                Logger.getLogger(AdminScreen.class.getName()).log(Level.SEVERE, null, ex);
-                //            }
-            //            JButton btnNewButton = new JButton(new ImageIcon(img));
-            //            contentPane.add(btnNewButton);
-            //            contentPane.revalidate();
-            //            contentPane.repaint();
-            //        }
-        //
-        //        // Resmi yükle ve boyutlandır
-        //        Image img = new ImageIcon(resourceURL).getImage();
-        //        Image scaledImg = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH); // 50x50 boyutunda
-        //
-        //        // Buton oluştur ve ikon ekle
-        //        JButton MenuButton = new JButton();
-        //        MenuButton.setIcon(new ImageIcon(scaledImg));
-        //        MenuButton.setBounds(100, 100, 100, 100); // Daha büyük boyut
-        //        MenuButton.setBackground(Color.WHITE); // Arka planı değiştir
-        //
-        //        // Butonu ekle
-        //        contentPane.add(MenuButton);
-        //
-        //        // Görünümü yenile
-        //        contentPane.revalidate();
-        //        contentPane.repaint();
+        CustomerScreen customerScreen = new CustomerScreen(customer);
+        customerScreen.setVisible(true);
+        dispose();
     }//GEN-LAST:event_MenuButton1ActionPerformed
 
     /**
@@ -251,7 +216,6 @@ public class CustomerAnnouncementsScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable AnnouncementsTable;
-    private javax.swing.JButton MenuButton;
     private javax.swing.JButton MenuButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

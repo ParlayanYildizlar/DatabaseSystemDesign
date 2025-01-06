@@ -1,19 +1,54 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package InvoiceTrackingSystem;
 
-/**
- *
- * @author hp
- */
+import CorePackage.Admin;
+import CorePackage.Customer;
+import java.awt.Image;
+import java.util.List;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 public class AdminUsersScreen extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Users
-     */
+    private Admin admin;
+
     public AdminUsersScreen() {
+        initComponents();
+
+        ImageIcon icon2 = new ImageIcon("C:\\Users\\bayra\\Downloads\\Menu30.png");
+        Image img2 = icon2.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        icon2.setImage(img2);
+        MenuButton.setIcon(icon2);
+
+        loadAllCustomers();
+    }
+
+    private void loadAllCustomers() {
+        DefaultTableModel model = (DefaultTableModel) users_table.getModel();
+        model.setRowCount(0);
+
+        try {
+            Customer customerObj = new Customer();
+            List<Customer> customers = customerObj.getAllCustomers();
+
+            for (Customer customer : customers) {
+                model.addRow(new Object[]{
+                    customer.getNationalIdNumber(),
+                    customer.getName(),
+                    customer.getSurname(),
+                    customer.getUsername(),
+                    customer.getPassword(),
+                    customer.getPhone(),
+                    customer.getEmail()
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public AdminUsersScreen(Admin admin) {
+        this.admin = admin;
         initComponents();
     }
 
@@ -49,34 +84,49 @@ public class AdminUsersScreen extends javax.swing.JFrame {
 
         delete_btn.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
         delete_btn.setText("Delete");
+        delete_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delete_btnActionPerformed(evt);
+            }
+        });
 
         users_table.setBackground(new java.awt.Color(51, 51, 51));
-        users_table.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
+        users_table.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         users_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Customer_ID", "Name", "Surname", "Identity Number"
+                "National_ID_Number", "Name", "Surname", "UserName", "Password", "PhoneNumber", "Email"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
+        users_table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                users_tableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(users_table);
 
         search_btn1.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
         search_btn1.setText("Search");
+        search_btn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                search_btn1ActionPerformed(evt);
+            }
+        });
 
-        MenuButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Menu30.png"))); // NOI18N
+        MenuButton.setText("Menu");
         MenuButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuButtonActionPerformed(evt);
@@ -88,31 +138,34 @@ public class AdminUsersScreen extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(MenuButton))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(104, 104, 104)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(usersID_txt, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47)
-                .addComponent(search_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 887, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(425, 425, 425)
-                .addComponent(delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(843, 843, 843)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(104, 104, 104)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(usersID_txt, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47)
+                        .addComponent(search_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 887, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(425, 425, 425)
+                        .addComponent(delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(843, 843, 843)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(MenuButton)))
+                .addGap(6, 6, 6))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(MenuButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addContainerGap()
+                .addComponent(MenuButton, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
@@ -148,46 +201,70 @@ public class AdminUsersScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void MenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuButtonActionPerformed
-        //        // Kaynağı yükle
-        //        URL resourceURL = this.getClass().getResource("/Icons/MenulIcon.png");
-        //        if (resourceURL == null) {
-            //            System.out.println("Kaynak dosyası bulunamadı!");
-            //        } else {
-            //            System.out.println("Kaynak dosyası bulundu: " + resourceURL.toExternalForm());
-            //        }
-        //        InputStream is = getClass().getResourceAsStream("/Icons/MenulIcon.png");
-        //        if (is == null) {
-            //            JOptionPane.showMessageDialog(this, "Kaynak dosyası bulunamadı!", "Hata", JOptionPane.ERROR_MESSAGE);
-            //        } else {
-            //            Image img = null;
-            //            try {
-                //                img = new ImageIcon(ImageIO.read(is)).getImage();
-                //            } catch (IOException ex) {
-                //                Logger.getLogger(AdminScreen.class.getName()).log(Level.SEVERE, null, ex);
-                //            }
-            //            JButton btnNewButton = new JButton(new ImageIcon(img));
-            //            contentPane.add(btnNewButton);
-            //            contentPane.revalidate();
-            //            contentPane.repaint();
-            //        }
-        //
-        //        // Resmi yükle ve boyutlandır
-        //        Image img = new ImageIcon(resourceURL).getImage();
-        //        Image scaledImg = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH); // 50x50 boyutunda
-        //
-        //        // Buton oluştur ve ikon ekle
-        //        JButton MenuButton = new JButton();
-        //        MenuButton.setIcon(new ImageIcon(scaledImg));
-        //        MenuButton.setBounds(100, 100, 100, 100); // Daha büyük boyut
-        //        MenuButton.setBackground(Color.WHITE); // Arka planı değiştir
-        //
-        //        // Butonu ekle
-        //        contentPane.add(MenuButton);
-        //
-        //        // Görünümü yenile
-        //        contentPane.revalidate();
-        //        contentPane.repaint();
+
+        AdminScreen adminScreen = new AdminScreen(admin);
+        adminScreen.setVisible(true);
+        dispose();
     }//GEN-LAST:event_MenuButtonActionPerformed
+
+    private void search_btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_btn1ActionPerformed
+
+        String nationalId = usersID_txt.getText().trim();
+
+        if (nationalId.isEmpty()) {
+            loadAllCustomers();
+            return;
+        }
+
+        Customer customerObj = new Customer();
+        Customer customer = customerObj.getCustomerDetails(nationalId);
+
+        if (customer != null) {
+            DefaultTableModel model = (DefaultTableModel) users_table.getModel();
+            model.setRowCount(0);
+            model.addRow(new Object[]{
+                customer.getNationalIdNumber(),
+                customer.getName(),
+                customer.getSurname(),
+                customer.getUsername(),
+                customer.getPassword(),
+                customer.getPhone(),
+                customer.getEmail()
+            });
+        } else {
+            JOptionPane.showMessageDialog(this, "No customer found with the provided ID!", "Info", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_search_btn1ActionPerformed
+
+    private void delete_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_btnActionPerformed
+
+        String nationalId = usersID_txt.getText().trim();
+
+        if (nationalId.isEmpty()) {
+            int selectedRow = users_table.getSelectedRow();
+            if (selectedRow >= 0) {
+                nationalId = users_table.getValueAt(selectedRow, 0).toString();
+            } else {
+                JOptionPane.showMessageDialog(this, "Please enter or select a valid National ID!", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
+        Customer customerObj = new Customer();
+
+        if (customerObj.deleteCustomer(nationalId)) {
+            JOptionPane.showMessageDialog(this, "Customer deleted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            loadAllCustomers();
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to delete customer!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+
+    }//GEN-LAST:event_delete_btnActionPerformed
+
+    private void users_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_users_tableMouseClicked
+
+    }//GEN-LAST:event_users_tableMouseClicked
 
     /**
      * @param args the command line arguments

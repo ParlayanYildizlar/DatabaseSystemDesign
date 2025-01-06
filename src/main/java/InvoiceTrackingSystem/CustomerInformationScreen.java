@@ -4,17 +4,108 @@
  */
 package InvoiceTrackingSystem;
 
+import CorePackage.Address;
+import CorePackage.Customer;
+import java.awt.Image;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author 90554
  */
 public class CustomerInformationScreen extends javax.swing.JFrame {
 
+    private Customer customer;
+
     /**
      * Creates new form CustomerInformationScreen
      */
     public CustomerInformationScreen() {
         initComponents();
+
+        ImageIcon icon1 = new ImageIcon("C:\\Users\\bayra\\Downloads\\Menu30.png");
+        Image img1 = icon1.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        icon1.setImage(img1);
+        MenuButton.setIcon(icon1);
+    }
+
+    public CustomerInformationScreen(Customer customer) {
+        this.customer = customer;
+        initComponents();
+        fetchCustomerDetailsFromDatabase();
+        loadCustomerInformation();
+        loadAddresses();
+    }
+
+    private void fetchCustomerDetailsFromDatabase() {
+        if (customer != null && customer.getUsername() != null) {
+            Customer fullCustomer = Customer.getCustomerByUsername(customer.getUsername());
+            if (fullCustomer != null) {
+                this.customer = fullCustomer;
+            } else {
+                JOptionPane.showMessageDialog(this, "Customer details not found in the database!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid customer username!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void loadCustomerInformation() {
+        if (customer != null) {
+            NameTextField.setText(customer.getName());
+            SurnameTextField.setText(customer.getSurname());
+            UsernameTextField.setText(customer.getUsername());
+            NationalIdLabel.setText(customer.getNationalIdNumber());
+            PhoneTextField.setText(customer.getPhone());
+            EmailTextField.setText(customer.getEmail() != null ? customer.getEmail() : "");
+        }
+    }
+
+    private void loadAddresses() {
+        DefaultListModel<String> addressModel = new DefaultListModel<>();
+
+        if (customer != null && customer.getAddresses() != null) {
+            for (Address address : customer.getAddresses()) {
+                addressModel.addElement(address.getAddressName());
+            }
+        }
+
+        AddressList.setModel(addressModel);
+
+        AddressList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                String selectedAddressName = AddressList.getSelectedValue();
+                if (selectedAddressName != null) {
+                    Address selectedAddress = customer.getAddresses().stream()
+                            .filter(address -> address.getAddressName().equals(selectedAddressName))
+                            .findFirst()
+                            .orElse(null);
+
+                    if (selectedAddress != null) {
+                        AddressLabel.setText(selectedAddress.getOpenAddress());
+                    } else {
+                        AddressLabel.setText("No address found.");
+                    }
+                }
+            }
+        });
+    }
+
+    private void saveCustomerInformation() {
+        if (customer != null) {
+            customer.setName(NameTextField.getText());
+            customer.setSurname(SurnameTextField.getText());
+            customer.setUsername(UsernameTextField.getText());
+            customer.setPhone(PhoneTextField.getText());
+            customer.setEmail(EmailTextField.getText());
+
+            customer.updateCustomerDetails();
+            JOptionPane.showMessageDialog(this, "Customer information updated successfully!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Unable to save customer information!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -47,7 +138,7 @@ public class CustomerInformationScreen extends javax.swing.JFrame {
         PhoneTextField = new javax.swing.JTextField();
         EmailTextField = new javax.swing.JTextField();
         AddAddressButton = new javax.swing.JButton();
-        NameTextField1 = new javax.swing.JTextField();
+        SurnameTextField = new javax.swing.JTextField();
         ChangeAddressButton = new javax.swing.JButton();
         ChangePasswordBttn = new javax.swing.JButton();
 
@@ -57,9 +148,14 @@ public class CustomerInformationScreen extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(965, 657));
         jPanel1.setLayout(null);
 
-        MenuButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Menu30.png"))); // NOI18N
+        MenuButton.setText("Menu");
+        MenuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuButtonActionPerformed(evt);
+            }
+        });
         jPanel1.add(MenuButton);
-        MenuButton.setBounds(6, 6, 36, 37);
+        MenuButton.setBounds(6, 6, 60, 40);
 
         jLabel1.setFont(new java.awt.Font("SimSun-ExtG", 1, 32)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -68,70 +164,94 @@ public class CustomerInformationScreen extends javax.swing.JFrame {
         jPanel1.add(jLabel1);
         jLabel1.setBounds(152, 38, 659, 52);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("SimSun-ExtG", 1, 14)); // NOI18N
         jLabel2.setText("Name Surname:");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("SimSun-ExtG", 1, 14)); // NOI18N
         jLabel3.setText("Username:");
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("SimSun-ExtG", 1, 14)); // NOI18N
         jLabel4.setText("National ID Number:");
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("SimSun-ExtG", 1, 14)); // NOI18N
         jLabel7.setText("Addresses");
 
-        NationalIdLabel.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        NationalIdLabel.setFont(new java.awt.Font("SimSun-ExtG", 0, 12)); // NOI18N
         NationalIdLabel.setText("jLabel5");
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("SimSun-ExtG", 1, 14)); // NOI18N
         jLabel5.setText("Phone Number:");
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("SimSun-ExtG", 1, 14)); // NOI18N
         jLabel6.setText("Email:");
 
         AddressList.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        AddressList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(AddressList);
 
-        AddressLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        AddressLabel.setText("jLabel8");
+        AddressLabel.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
+        AddressLabel.setText(".");
 
-        SaveButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        SaveButton.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
         SaveButton.setText("Save");
+        SaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SaveButtonActionPerformed(evt);
+            }
+        });
 
+        DeleteAddressButton.setFont(new java.awt.Font("SimSun-ExtG", 0, 12)); // NOI18N
         DeleteAddressButton.setText("Delete Address");
+        DeleteAddressButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteAddressButtonActionPerformed(evt);
+            }
+        });
 
-        NameTextField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        NameTextField.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
 
-        UsernameTextField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        UsernameTextField.setFont(new java.awt.Font("SimSun-ExtG", 0, 12)); // NOI18N
         UsernameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 UsernameTextFieldActionPerformed(evt);
             }
         });
 
-        PhoneTextField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        PhoneTextField.setFont(new java.awt.Font("SimSun-ExtG", 0, 12)); // NOI18N
 
-        EmailTextField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        EmailTextField.setFont(new java.awt.Font("SimSun-ExtG", 0, 12)); // NOI18N
 
+        AddAddressButton.setFont(new java.awt.Font("SimSun-ExtG", 0, 12)); // NOI18N
         AddAddressButton.setText("Add Address");
+        AddAddressButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddAddressButtonActionPerformed(evt);
+            }
+        });
 
-        NameTextField1.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        SurnameTextField.setFont(new java.awt.Font("SimSun-ExtG", 0, 12)); // NOI18N
 
+        ChangeAddressButton.setFont(new java.awt.Font("SimSun-ExtG", 0, 12)); // NOI18N
         ChangeAddressButton.setText("Change Address");
+        ChangeAddressButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ChangeAddressButtonActionPerformed(evt);
+            }
+        });
 
+        ChangePasswordBttn.setFont(new java.awt.Font("SimSun-ExtG", 0, 12)); // NOI18N
         ChangePasswordBttn.setText("Change Password");
+        ChangePasswordBttn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ChangePasswordBttnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(88, Short.MAX_VALUE)
+                .addContainerGap(85, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(ChangePasswordBttn)
@@ -167,7 +287,7 @@ public class CustomerInformationScreen extends javax.swing.JFrame {
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(NameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(NameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addComponent(SurnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(78, 78, 78))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -181,10 +301,9 @@ public class CustomerInformationScreen extends javax.swing.JFrame {
                 .addComponent(ChangePasswordBttn)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(NameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(NameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(NameTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
+                    .addComponent(SurnameTextField, javax.swing.GroupLayout.Alignment.LEADING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(UsernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -201,25 +320,20 @@ public class CustomerInformationScreen extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(EmailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(26, 26, 26))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(AddAddressButton)
-                        .addGap(18, 18, 18)))
+                    .addComponent(AddAddressButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(DeleteAddressButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ChangeAddressButton)
-                        .addGap(42, 42, 42))
+                        .addComponent(ChangeAddressButton))
                     .addComponent(AddressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addComponent(SaveButton)
                 .addGap(16, 16, 16))
         );
@@ -244,6 +358,76 @@ public class CustomerInformationScreen extends javax.swing.JFrame {
     private void UsernameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsernameTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_UsernameTextFieldActionPerformed
+
+    private void DeleteAddressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteAddressButtonActionPerformed
+        String selectedAddressName = AddressList.getSelectedValue();
+
+        if (selectedAddressName != null && customer != null) {
+            Address selectedAddress = customer.getAddresses().stream()
+                    .filter(address -> address.getAddressName().equals(selectedAddressName))
+                    .findFirst()
+                    .orElse(null);
+
+            if (selectedAddress != null) {
+                customer.deleteAddress(selectedAddress);
+                customer.getAddresses().remove(selectedAddress);
+
+                DefaultListModel<String> addressModel = (DefaultListModel<String>) AddressList.getModel();
+                addressModel.removeElement(selectedAddressName);
+                AddressLabel.setText("");
+
+                JOptionPane.showMessageDialog(this, "Address deleted successfully!");
+            } else {
+                JOptionPane.showMessageDialog(this, "Address not found in the list.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select an address to delete.");
+        }
+
+    }//GEN-LAST:event_DeleteAddressButtonActionPerformed
+
+    private void ChangeAddressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChangeAddressButtonActionPerformed
+        String selectedAddressName = AddressList.getSelectedValue();
+
+        if (selectedAddressName != null && customer != null) {
+            Address selectedAddress = customer.getAddresses().stream()
+                    .filter(address -> address.getAddressName().equals(selectedAddressName))
+                    .findFirst()
+                    .orElse(null);
+
+            if (selectedAddress != null) {
+                AddressScreen addressScreen = new AddressScreen(customer, selectedAddress);
+                addressScreen.setVisible(true);
+                dispose(); 
+            } else {
+                JOptionPane.showMessageDialog(this, "Selected address not found!");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select an address to change.");
+        }
+    }//GEN-LAST:event_ChangeAddressButtonActionPerformed
+
+    private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
+        saveCustomerInformation();
+    }//GEN-LAST:event_SaveButtonActionPerformed
+
+    private void ChangePasswordBttnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChangePasswordBttnActionPerformed
+        ChangePasswordScreen changePasswordScreen = new ChangePasswordScreen(customer);
+        changePasswordScreen.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_ChangePasswordBttnActionPerformed
+
+    private void AddAddressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddAddressButtonActionPerformed
+        AddressScreen addressScreen = new AddressScreen(customer);
+        addressScreen.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_AddAddressButtonActionPerformed
+
+    private void MenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuButtonActionPerformed
+        CustomerScreen customerScreen = new CustomerScreen(customer);
+        customerScreen.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_MenuButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -290,10 +474,10 @@ public class CustomerInformationScreen extends javax.swing.JFrame {
     private javax.swing.JTextField EmailTextField;
     private javax.swing.JButton MenuButton;
     private javax.swing.JTextField NameTextField;
-    private javax.swing.JTextField NameTextField1;
     private javax.swing.JLabel NationalIdLabel;
     private javax.swing.JTextField PhoneTextField;
     private javax.swing.JButton SaveButton;
+    private javax.swing.JTextField SurnameTextField;
     private javax.swing.JTextField UsernameTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

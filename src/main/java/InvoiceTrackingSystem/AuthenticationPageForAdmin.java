@@ -1,58 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package InvoiceTrackingSystem;
 
 import CorePackage.Admin;
-import CorePackage.Database;
-import java.awt.HeadlessException;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
-/**
- *
- * @author bayra
- */
 public class AuthenticationPageForAdmin extends javax.swing.JFrame {
 
     String nameSurname;
     String username;
     String password;
 
-    /**
-     * Creates new form AutheticationPageForAdmin
-     */
-    public AuthenticationPageForAdmin(String nameSurname, String username, String password,String phone,String idNumber) {
+    public AuthenticationPageForAdmin(String nameSurname, String username, String password, String phone, String idNumber) {
         initComponents();
         setLocationRelativeTo(null);
 
         this.nameSurname = nameSurname;
         this.username = username;
         this.password = password;
-        
-         setTitle("Admin Authentication Page");
-        setSize(400, 300);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(null);
-
-       
-
-        add(panel);
-        setVisible(true);
-
-    }
-    
-
-     public AuthenticationPageForAdmin() {
         setTitle("Admin Authentication Page");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -61,7 +27,19 @@ public class AuthenticationPageForAdmin extends javax.swing.JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(null);
 
-       
+        add(panel);
+        setVisible(true);
+
+    }
+
+    public AuthenticationPageForAdmin() {
+        setTitle("Admin Authentication Page");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
 
         add(panel);
         setVisible(true);
@@ -181,7 +159,7 @@ public class AuthenticationPageForAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtCodeFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodeFieldsActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtCodeFieldsActionPerformed
 
     private void authenticationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authenticationButtonActionPerformed
@@ -192,20 +170,16 @@ public class AuthenticationPageForAdmin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Successfully Created Admin Account ",
                     "Operation Successful", JOptionPane.INFORMATION_MESSAGE);
 
-            // Yeni Admin hesabını oluştur
-            Admin admin = new Admin(nameSurname, username, password);
+            Admin admin = new Admin(username, password);
 
-            // Ana ekrana yönlendir
-            startScreen.setVisible(true); // Eski `show()` yerine
-            dispose(); // Mevcut pencereyi kapat
+            startScreen.setVisible(true);
+            dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Your authentication code is incorrect. For security you are redirected to registration and login page. ",
                     "Wrong Authentication Code", JOptionPane.ERROR_MESSAGE);
 
-            // Kayıt ekranına yönlendir
-            //startScreen.setVisible(true); // Eski `show()` yerine
             startScreen.show();
-            dispose(); // Mevcut pencereyi kapat
+            dispose();
         }
     }//GEN-LAST:event_authenticationButtonActionPerformed
 

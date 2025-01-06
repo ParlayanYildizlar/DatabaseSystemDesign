@@ -1,20 +1,71 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package InvoiceTrackingSystem;
 
-/**
- *
- * @author bayra
- */
+import CorePackage.Admin;
+import CorePackage.Request;
+import CorePackage.DBConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 public class AdminRequestScreen extends javax.swing.JFrame {
 
-    /**
-     * Creates new form RequestScreen
-     */
+    private Admin admin;
+
     public AdminRequestScreen() {
         initComponents();
+    }
+
+    public AdminRequestScreen(Admin admin) {
+        this.admin = admin;
+        initComponents();
+        refreshTable("All", "All");
+    }
+
+    private void refreshTable(String requestType, String status) {
+        try ( Connection conn = DBConnection.getConnection()) {
+            String query = "SELECT r.request_id, c.Name AS customerName, c.Surname AS customerSurname, "
+                    + "rt.request_type_name AS requestType, r.message, r.created_at AS CreationTime, "
+                    + "ci.CityName AS City, n.Neighborhood AS Neighbor, s.status_name AS RequestStatus, r.answer "
+                    + "FROM Request r "
+                    + "JOIN Customer c ON r.customer_id = c.idnum "
+                    + "JOIN Address a ON r.address_id = a.address_id "
+                    + "JOIN Neighborhood n ON a.neighborhood_id = n.neighborhood_id "
+                    + "JOIN City ci ON n.city_id = ci.city_id "
+                    + "JOIN Request_Type rt ON r.request_type_id = rt.request_type_id "
+                    + "JOIN Status s ON r.status_id = s.status_id "
+                    + "WHERE (rt.request_type_name = ? OR ? = 'All') "
+                    + "AND (s.status_name = ? OR ? = 'All')";
+
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, requestType);
+            ps.setString(2, requestType);
+            ps.setString(3, status);
+            ps.setString(4, status);
+            ResultSet rs = ps.executeQuery();
+
+            DefaultTableModel model = (DefaultTableModel) requestTable.getModel();
+            model.setRowCount(0);
+
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getInt("request_id"),
+                    rs.getString("customerName") + " " + rs.getString("customerSurname"),
+                    rs.getString("requestType"),
+                    rs.getString("message"),
+                    rs.getTimestamp("CreationTime"),
+                    rs.getString("City"),
+                    rs.getString("Neighbor"),
+                    rs.getString("RequestStatus"),
+                    rs.getString("answer")
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading data: " + e.getMessage());
+        }
     }
 
     /**
@@ -28,24 +79,25 @@ public class AdminRequestScreen extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         MenuButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        requestLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         reqTypeComboBox = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         reqStatusComboBox = new javax.swing.JComboBox<>();
         searchButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        requestTable = new javax.swing.JTable();
+        answerComboBox = new javax.swing.JComboBox<>();
         answerButton = new javax.swing.JButton();
         subscButton = new javax.swing.JButton();
         interruptsButton = new javax.swing.JButton();
+        searchLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(34, 40, 44));
 
-        MenuButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Menu30.png"))); // NOI18N
+        MenuButton1.setText("Menu");
         MenuButton1.setPreferredSize(new java.awt.Dimension(36, 36));
         MenuButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -53,26 +105,24 @@ public class AdminRequestScreen extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("SimSun-ExtG", 1, 48)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/RequestService.png"))); // NOI18N
-        jLabel1.setText("  REQUESTS");
-        jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        requestLabel.setFont(new java.awt.Font("SimSun-ExtG", 1, 48)); // NOI18N
+        requestLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        requestLabel.setText("  REQUESTS");
+        requestLabel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel2.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
         jLabel2.setText("Request Type");
 
         reqTypeComboBox.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
-        reqTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choose Request", "Subscription", "Interruption", " " }));
+        reqTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "New Subscription", "Outage Information", "Others", "", "", "" }));
 
         jLabel3.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
         jLabel3.setText("Request Status");
 
         reqStatusComboBox.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
-        reqStatusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Old Requests", "New Requests", "All Requests" }));
+        reqStatusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Pending ", "Resolved" }));
 
         searchButton.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
-        searchButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/FilterWhite.png"))); // NOI18N
         searchButton.setText("  Search");
         searchButton.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         searchButton.addActionListener(new java.awt.event.ActionListener() {
@@ -81,61 +131,74 @@ public class AdminRequestScreen extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        requestTable.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        requestTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Requests"
+                "Request ID", "Customer Name", "Request Type", "Message", "Creation Time", "City", "Neighbor", "Request Status", "Answer"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(requestTable);
+        if (requestTable.getColumnModel().getColumnCount() > 0) {
+            requestTable.getColumnModel().getColumn(0).setMinWidth(100);
+            requestTable.getColumnModel().getColumn(0).setMaxWidth(100);
+            requestTable.getColumnModel().getColumn(1).setMinWidth(120);
+            requestTable.getColumnModel().getColumn(1).setMaxWidth(120);
+        }
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        answerComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Your request is being processed.", "Your issue has been resolved.", "We have assigned a team to handle this issue.", "Thank you for reporting this issue. We will take necessary actions." }));
 
         answerButton.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
         answerButton.setText("Answer");
         answerButton.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        answerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                answerButtonActionPerformed(evt);
+            }
+        });
 
         subscButton.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
         subscButton.setText("Subscriptions");
         subscButton.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        subscButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subscButtonActionPerformed(evt);
+            }
+        });
 
         interruptsButton.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
         interruptsButton.setText("Interrupts");
         interruptsButton.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        interruptsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                interruptsButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(MenuButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(185, 185, 185)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 582, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 34, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 744, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(answerComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 744, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(answerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -143,7 +206,8 @@ public class AdminRequestScreen extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(searchLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(searchButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -155,6 +219,15 @@ public class AdminRequestScreen extends javax.swing.JFrame {
                         .addGap(66, 66, 66)
                         .addComponent(interruptsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(300, 300, 300))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(185, 185, 185)
+                        .addComponent(requestLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 582, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(MenuButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,7 +235,7 @@ public class AdminRequestScreen extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(MenuButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(requestLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(48, 48, 48)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -171,14 +244,16 @@ public class AdminRequestScreen extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(reqStatusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(searchButton)
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(searchButton)
+                    .addComponent(searchLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(answerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE))
+                    .addComponent(answerComboBox, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(interruptsButton, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
@@ -201,54 +276,103 @@ public class AdminRequestScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void MenuButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuButton1ActionPerformed
-        //        // Kaynağı yükle
-        //        URL resourceURL = this.getClass().getResource("/Icons/MenulIcon.png");
-        //        if (resourceURL == null) {
-            //            System.out.println("Kaynak dosyası bulunamadı!");
-            //        } else {
-            //            System.out.println("Kaynak dosyası bulundu: " + resourceURL.toExternalForm());
-            //        }
-        //        InputStream is = getClass().getResourceAsStream("/Icons/MenulIcon.png");
-        //        if (is == null) {
-            //            JOptionPane.showMessageDialog(this, "Kaynak dosyası bulunamadı!", "Hata", JOptionPane.ERROR_MESSAGE);
-            //        } else {
-            //            Image img = null;
-            //            try {
-                //                img = new ImageIcon(ImageIO.read(is)).getImage();
-                //            } catch (IOException ex) {
-                //                Logger.getLogger(AdminScreen.class.getName()).log(Level.SEVERE, null, ex);
-                //            }
-            //            JButton btnNewButton = new JButton(new ImageIcon(img));
-            //            contentPane.add(btnNewButton);
-            //            contentPane.revalidate();
-            //            contentPane.repaint();
-            //        }
-        //
-        //        // Resmi yükle ve boyutlandır
-        //        Image img = new ImageIcon(resourceURL).getImage();
-        //        Image scaledImg = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH); // 50x50 boyutunda
-        //
-        //        // Buton oluştur ve ikon ekle
-        //        JButton MenuButton = new JButton();
-        //        MenuButton.setIcon(new ImageIcon(scaledImg));
-        //        MenuButton.setBounds(100, 100, 100, 100); // Daha büyük boyut
-        //        MenuButton.setBackground(Color.WHITE); // Arka planı değiştir
-        //
-        //        // Butonu ekle
-        //        contentPane.add(MenuButton);
-        //
-        //        // Görünümü yenile
-        //        contentPane.revalidate();
-        //        contentPane.repaint();
+        AdminScreen adminScreen = new AdminScreen(admin);
+        adminScreen.setVisible(true);
+        dispose();
     }//GEN-LAST:event_MenuButton1ActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        // TODO add your handling code here:
+        String selectedRequestType = reqTypeComboBox.getSelectedItem().toString();
+        String selectedStatus = reqStatusComboBox.getSelectedItem().toString();
+        refreshTable(selectedRequestType, selectedStatus);
     }//GEN-LAST:event_searchButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void answerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_answerButtonActionPerformed
+        int selectedRow = requestTable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a request!");
+            return;
+        }
+
+        int requestId = Integer.parseInt(requestTable.getValueAt(selectedRow, 0).toString());
+        String answer = answerComboBox.getSelectedItem().toString();
+
+        try ( Connection conn = DBConnection.getConnection()) {
+            boolean success = Request.addAnswer(conn, requestId, answer);
+            if (success) {
+                JOptionPane.showMessageDialog(this, "Answer added successfully, and status updated to 'Resolved'!");
+                refreshTable("All", "All");
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to add answer or update status.");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "An error occurred: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_answerButtonActionPerformed
+
+    private void subscButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subscButtonActionPerformed
+        int selectedRow = requestTable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a request from the table.");
+            return;
+        }
+
+        int requestId = (int) requestTable.getValueAt(selectedRow, 0);
+        String answer = "Your request is being processed.";
+        try ( Connection conn = DBConnection.getConnection()) {
+            boolean success = Request.addAnswer(conn, requestId, answer);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "An error occurred: " + ex.getMessage());
+        }
+
+        try ( Connection connection = DBConnection.getConnection()) {
+            Request request = Request.getRequestById(connection, requestId);
+            if (request != null) {
+                AdminSubscribeScreen subscriptionScreen = new AdminSubscribeScreen(admin, request.getRequestId());
+                subscriptionScreen.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Selected request not found.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error while fetching request: " + e.getMessage());
+        }
+
+    }//GEN-LAST:event_subscButtonActionPerformed
+
+    private void interruptsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_interruptsButtonActionPerformed
+        int selectedRow = requestTable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a request from the table.");
+            return;
+        }
+
+        int requestId = (int) requestTable.getValueAt(selectedRow, 0);
+        String answer = "Your issue has been resolved.";
+        try ( Connection conn = DBConnection.getConnection()) {
+            boolean success = Request.addAnswer(conn, requestId, answer);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "An error occurred: " + ex.getMessage());
+        }
+        try ( Connection connection = DBConnection.getConnection()) {
+            Request request = Request.getRequestById(connection, requestId);
+            if (request != null) {
+                AdminInterruptionScreen interruptionScreen = new AdminInterruptionScreen(admin, request.getCustomerNationalID());
+                interruptionScreen.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Selected request not found.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error while fetching request: " + e.getMessage());
+        }
+    }//GEN-LAST:event_interruptsButtonActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -285,17 +409,18 @@ public class AdminRequestScreen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton MenuButton1;
     private javax.swing.JButton answerButton;
+    private javax.swing.JComboBox<String> answerComboBox;
     private javax.swing.JButton interruptsButton;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JComboBox<String> reqStatusComboBox;
     private javax.swing.JComboBox<String> reqTypeComboBox;
+    private javax.swing.JLabel requestLabel;
+    private javax.swing.JTable requestTable;
     private javax.swing.JButton searchButton;
+    private javax.swing.JLabel searchLabel;
     private javax.swing.JButton subscButton;
     // End of variables declaration//GEN-END:variables
 }

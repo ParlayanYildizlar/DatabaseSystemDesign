@@ -1,8 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package InvoiceTrackingSystem;
+
+import CorePackage.Bill;
+import CorePackage.Customer;
+import CorePackage.DBConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -13,8 +19,81 @@ public class CustomerInvoicesScreen extends javax.swing.JFrame {
     /**
      * Creates new form InvoicesScreen
      */
+    private String loggedInUsername;
+    private Customer customer;
+
+    public CustomerInvoicesScreen(String username) {
+        this.loggedInUsername = username; 
+        initComponents(); 
+        setupTableModel(); 
+
+        creditCardPanel.setVisible(false);
+
+        if (username == null || username.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No logged-in user found.", "Error", JOptionPane.ERROR_MESSAGE);
+            this.dispose();
+            return;
+        }
+        fetchCustomerDetailsFromDatabase();
+
+    }
+
+    public CustomerInvoicesScreen(Customer customer) {
+        this.customer = customer;
+        initComponents();
+        setupTableModel(); 
+        creditCardPanel.setVisible(false);
+        fetchCustomerDetailsFromDatabase();
+    }
+
     public CustomerInvoicesScreen() {
         initComponents();
+        setupTableModel(); 
+        creditCardPanel.setVisible(false);
+        fetchCustomerDetailsFromDatabase();
+    }
+
+    private void fetchCustomerDetailsFromDatabase() {
+        if (customer != null && customer.getUsername() != null) {
+            Customer fullCustomer = Customer.getCustomerByUsername(customer.getUsername());
+            if (fullCustomer != null) {
+                this.customer = fullCustomer;
+            } else {
+                JOptionPane.showMessageDialog(this, "Customer details not found in the database!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid customer username!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void setupTableModel() {
+        tableModel = new DefaultTableModel(new Object[][]{}, new String[]{
+            "Invoice ID", "Subscription Type", "Issue Date", "Due Date", "Total Amount", "Pay Status"
+        });
+        invoiceTable.setModel(tableModel); 
+    }
+
+    private DefaultTableModel tableModel;
+
+    public static boolean luhnControlMethod(String cardNumber) {
+        if (cardNumber == null || cardNumber.length() < 13 || cardNumber.length() > 19) {
+            return false;
+        }
+
+        int sum = 0;
+        boolean alternate = false;
+        for (int i = cardNumber.length() - 1; i >= 0; i--) {
+            int n = Integer.parseInt(cardNumber.substring(i, i + 1));
+            if (alternate) {
+                n *= 2;
+                if (n > 9) {
+                    n -= 9;
+                }
+            }
+            sum += n;
+            alternate = !alternate;
+        }
+        return (sum % 10 == 0);
     }
 
     /**
@@ -26,17 +105,16 @@ public class CustomerInvoicesScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        MenuButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         MenuButton2 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        invoicesLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         SubsTypeComboBox = new javax.swing.JComboBox<>();
         searchButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
+        invoiceTable = new javax.swing.JTable();
+        creditCardPanel = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -47,20 +125,13 @@ public class CustomerInvoicesScreen extends javax.swing.JFrame {
         payButton = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         PayStatusComboBox = new javax.swing.JComboBox<>();
-
-        MenuButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Menu30.png"))); // NOI18N
-        MenuButton1.setPreferredSize(new java.awt.Dimension(36, 36));
-        MenuButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MenuButton1ActionPerformed(evt);
-            }
-        });
+        logOutButton = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(34, 40, 44));
 
-        MenuButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Menu30.png"))); // NOI18N
+        MenuButton2.setText("Menu");
         MenuButton2.setPreferredSize(new java.awt.Dimension(36, 36));
         MenuButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -68,24 +139,26 @@ public class CustomerInvoicesScreen extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("SimSun-ExtG", 1, 48)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/BillsWhite.png"))); // NOI18N
-        jLabel1.setText("  INVOICES");
-        jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        invoicesLabel.setFont(new java.awt.Font("SimSun-ExtG", 1, 48)); // NOI18N
+        invoicesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        invoicesLabel.setText("  INVOICES");
+        invoicesLabel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel2.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
         jLabel2.setText("Subscription Type");
 
         SubsTypeComboBox.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
-        SubsTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choose Subscription", "Natural Gas", "Water", "Electricity" }));
+        SubsTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choose Subscription", "Water", "Electricity", "Natural Gas" }));
 
         searchButton.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
         searchButton.setText("Search");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
+            }
+        });
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/FilterWhite.png"))); // NOI18N
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        invoiceTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -96,7 +169,7 @@ public class CustomerInvoicesScreen extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(invoiceTable);
 
         jLabel4.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
         jLabel4.setText("Credit Card Number");
@@ -108,51 +181,56 @@ public class CustomerInvoicesScreen extends javax.swing.JFrame {
         jLabel6.setText("CVV");
 
         dayComboBox.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
-        dayComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Day", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        dayComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Month", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", " " }));
 
         monthComboBox.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
-        monthComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
+        monthComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Year", "2025", "2026", "2027", "2028", "2029", "2030", "2031", "2032", "2033", "2034", "2035", "2036", "2037", "2038", "2039", "2040" }));
 
         payButton.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
         payButton.setText("PAY");
+        payButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                payButtonActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout creditCardPanelLayout = new javax.swing.GroupLayout(creditCardPanel);
+        creditCardPanel.setLayout(creditCardPanelLayout);
+        creditCardPanelLayout.setHorizontalGroup(
+            creditCardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(creditCardPanelLayout.createSequentialGroup()
                 .addGap(109, 109, 109)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(creditCardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(creditCardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cvvTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(creditCardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(payButton)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(creditCardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cardNoTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGroup(creditCardPanelLayout.createSequentialGroup()
                                 .addComponent(dayComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(monthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(138, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        creditCardPanelLayout.setVerticalGroup(
+            creditCardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(creditCardPanelLayout.createSequentialGroup()
                 .addGap(45, 45, 45)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(creditCardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(cardNoTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(creditCardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(dayComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(monthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(creditCardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(cvvTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -166,6 +244,14 @@ public class CustomerInvoicesScreen extends javax.swing.JFrame {
         PayStatusComboBox.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
         PayStatusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choose Status", "Paid", "Unpaid" }));
 
+        logOutButton.setText("LOG OUT");
+        logOutButton.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 204, 255), null));
+        logOutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logOutButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -173,39 +259,46 @@ public class CustomerInvoicesScreen extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 881, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(116, 116, 116)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(MenuButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(MenuButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(logOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(144, 144, 144)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 667, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel3))
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(PayStatusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(searchButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(SubsTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                .addContainerGap(45, Short.MAX_VALUE))
+                                .addGap(39, 39, 39)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 881, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(116, 116, 116)
+                                .addComponent(creditCardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(144, 144, 144)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(invoicesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 667, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel3))
+                                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(PayStatusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(searchButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(SubsTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                        .addGap(0, 39, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(MenuButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(MenuButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(logOutButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(invoicesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -221,8 +314,8 @@ public class CustomerInvoicesScreen extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addComponent(creditCardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -239,89 +332,123 @@ public class CustomerInvoicesScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void MenuButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuButton1ActionPerformed
-        //        // Kaynağı yükle
-        //        URL resourceURL = this.getClass().getResource("/Icons/MenulIcon.png");
-        //        if (resourceURL == null) {
-            //            System.out.println("Kaynak dosyası bulunamadı!");
-            //        } else {
-            //            System.out.println("Kaynak dosyası bulundu: " + resourceURL.toExternalForm());
-            //        }
-        //        InputStream is = getClass().getResourceAsStream("/Icons/MenulIcon.png");
-        //        if (is == null) {
-            //            JOptionPane.showMessageDialog(this, "Kaynak dosyası bulunamadı!", "Hata", JOptionPane.ERROR_MESSAGE);
-            //        } else {
-            //            Image img = null;
-            //            try {
-                //                img = new ImageIcon(ImageIO.read(is)).getImage();
-                //            } catch (IOException ex) {
-                //                Logger.getLogger(AdminScreen.class.getName()).log(Level.SEVERE, null, ex);
-                //            }
-            //            JButton btnNewButton = new JButton(new ImageIcon(img));
-            //            contentPane.add(btnNewButton);
-            //            contentPane.revalidate();
-            //            contentPane.repaint();
-            //        }
-        //
-        //        // Resmi yükle ve boyutlandır
-        //        Image img = new ImageIcon(resourceURL).getImage();
-        //        Image scaledImg = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH); // 50x50 boyutunda
-        //
-        //        // Buton oluştur ve ikon ekle
-        //        JButton MenuButton = new JButton();
-        //        MenuButton.setIcon(new ImageIcon(scaledImg));
-        //        MenuButton.setBounds(100, 100, 100, 100); // Daha büyük boyut
-        //        MenuButton.setBackground(Color.WHITE); // Arka planı değiştir
-        //
-        //        // Butonu ekle
-        //        contentPane.add(MenuButton);
-        //
-        //        // Görünümü yenile
-        //        contentPane.revalidate();
-        //        contentPane.repaint();
-    }//GEN-LAST:event_MenuButton1ActionPerformed
-
     private void MenuButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuButton2ActionPerformed
-        //        // Kaynağı yükle
-        //        URL resourceURL = this.getClass().getResource("/Icons/MenulIcon.png");
-        //        if (resourceURL == null) {
-            //            System.out.println("Kaynak dosyası bulunamadı!");
-            //        } else {
-            //            System.out.println("Kaynak dosyası bulundu: " + resourceURL.toExternalForm());
-            //        }
-        //        InputStream is = getClass().getResourceAsStream("/Icons/MenulIcon.png");
-        //        if (is == null) {
-            //            JOptionPane.showMessageDialog(this, "Kaynak dosyası bulunamadı!", "Hata", JOptionPane.ERROR_MESSAGE);
-            //        } else {
-            //            Image img = null;
-            //            try {
-                //                img = new ImageIcon(ImageIO.read(is)).getImage();
-                //            } catch (IOException ex) {
-                //                Logger.getLogger(AdminScreen.class.getName()).log(Level.SEVERE, null, ex);
-                //            }
-            //            JButton btnNewButton = new JButton(new ImageIcon(img));
-            //            contentPane.add(btnNewButton);
-            //            contentPane.revalidate();
-            //            contentPane.repaint();
-            //        }
-        //
-        //        // Resmi yükle ve boyutlandır
-        //        Image img = new ImageIcon(resourceURL).getImage();
-        //        Image scaledImg = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH); // 50x50 boyutunda
-        //
-        //        // Buton oluştur ve ikon ekle
-        //        JButton MenuButton = new JButton();
-        //        MenuButton.setIcon(new ImageIcon(scaledImg));
-        //        MenuButton.setBounds(100, 100, 100, 100); // Daha büyük boyut
-        //        MenuButton.setBackground(Color.WHITE); // Arka planı değiştir
-        //
-        //        // Butonu ekle
-        //        contentPane.add(MenuButton);
-        //
-        //        // Görünümü yenile
-        //        contentPane.revalidate();
-        //        contentPane.repaint();
+        CustomerScreen customerScreen = new CustomerScreen(customer);
+        customerScreen.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_MenuButton2ActionPerformed
+
+
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        creditCardPanel.setVisible(false);
+
+        String selectedPayStatus = (String) PayStatusComboBox.getSelectedItem();
+        String selectedSubsType = (String) SubsTypeComboBox.getSelectedItem();
+
+        if ("Choose Status".equals(selectedPayStatus) && "Choose Subscription".equals(selectedSubsType)) {
+            JOptionPane.showMessageDialog(this, "Please select valid Pay Status or Subscription Type.", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if ("Unpaid".equals(selectedPayStatus)) {
+            creditCardPanel.setVisible(true); 
+        } else {
+            creditCardPanel.setVisible(false); 
+        }
+
+        String query = "SELECT i.invoice_id, st.subscription_type_name, i.issue_date, i.due_date, "
+                + "i.total_amount, i.payment_status "
+                + "FROM Invoice i "
+                + "JOIN Subscription s ON i.subscription_id = s.subscription_id "
+                + "JOIN Subscription_Type st ON s.subscription_type_id = st.subscription_type_id "
+                + "JOIN Customer c ON s.National_id = c.idnum "
+                + "WHERE c.idnum = ? "
+                + "AND (st.subscription_type_name = ? OR ? = 'Choose Subscription') "
+                + "AND (i.payment_status = ? OR ? = 'Choose Status')";
+
+        try ( Connection conn = DBConnection.getConnection();  PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            String idnum = customer.getNationalIdNumber();
+            if (idnum == null) {
+                JOptionPane.showMessageDialog(this, "Customer ID not found.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            stmt.setString(1, idnum); 
+            stmt.setString(2, selectedSubsType); 
+            stmt.setString(3, selectedSubsType); 
+            stmt.setString(4, selectedPayStatus); 
+            stmt.setString(5, selectedPayStatus); 
+
+            ResultSet rs = stmt.executeQuery();
+            DefaultTableModel model = (DefaultTableModel) invoiceTable.getModel();
+            model.setRowCount(0);
+
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getInt("invoice_id"),
+                    rs.getString("subscription_type_name"),
+                    rs.getDate("issue_date"),
+                    rs.getDate("due_date"),
+                    rs.getDouble("total_amount"),
+                    rs.getString("payment_status")
+                });
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "An error occurred while fetching invoices.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_searchButtonActionPerformed
+
+    private void payButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payButtonActionPerformed
+        int selectedRow = invoiceTable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select an unpaid invoice.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int invoiceId = (int) invoiceTable.getValueAt(selectedRow, 0);
+        String paymentStatus = (String) invoiceTable.getValueAt(selectedRow, 5);
+
+        if (!"Unpaid".equals(paymentStatus)) {
+            JOptionPane.showMessageDialog(this, "Only unpaid invoices can be paid.", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String cardNumber = cardNoTxtField.getText();
+        String cvv = cvvTxtField.getText();
+        String expMonth = (String) dayComboBox.getSelectedItem();
+        String expYear = (String) monthComboBox.getSelectedItem();
+
+        if (cardNumber.isEmpty() || cvv.isEmpty() || "Month".equals(expMonth) || "Year".equals(expYear)) {
+            JOptionPane.showMessageDialog(this, "Please fill in all credit card details.", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (!luhnControlMethod(cardNumber)) {
+            JOptionPane.showMessageDialog(this, "Invalid credit card number.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (Bill.payInvoice(invoiceId)) {
+            JOptionPane.showMessageDialog(this, "Payment successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            refreshTable();
+        } else {
+            JOptionPane.showMessageDialog(this, "Payment failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_payButtonActionPerformed
+
+    private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
+        StartScreen startScreen = new StartScreen();
+        startScreen.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_logOutButtonActionPerformed
+
+    private void refreshTable() {
+        searchButtonActionPerformed(null); 
+    }
 
     /**
      * @param args the command line arguments
@@ -360,14 +487,15 @@ public class CustomerInvoicesScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton MenuButton1;
     private javax.swing.JButton MenuButton2;
     private javax.swing.JComboBox<String> PayStatusComboBox;
     private javax.swing.JComboBox<String> SubsTypeComboBox;
     private javax.swing.JTextField cardNoTxtField;
+    private javax.swing.JPanel creditCardPanel;
     private javax.swing.JTextField cvvTxtField;
     private javax.swing.JComboBox<String> dayComboBox;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTable invoiceTable;
+    private javax.swing.JLabel invoicesLabel;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -375,9 +503,8 @@ public class CustomerInvoicesScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JToggleButton logOutButton;
     private javax.swing.JComboBox<String> monthComboBox;
     private javax.swing.JButton payButton;
     private javax.swing.JButton searchButton;

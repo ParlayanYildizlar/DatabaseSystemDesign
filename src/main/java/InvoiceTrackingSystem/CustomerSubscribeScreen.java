@@ -4,17 +4,94 @@
  */
 package InvoiceTrackingSystem;
 
+import CorePackage.Address;
+import CorePackage.Customer;
+import CorePackage.Subscription;
+import java.util.List;
+import javax.swing.ButtonGroup;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author bayra
  */
 public class CustomerSubscribeScreen extends javax.swing.JFrame {
 
-    /**
-     * Creates new form SubscribeScreen
-     */
+    private Customer customer;
+    private ButtonGroup subscriptionTypeGroup;
+
     public CustomerSubscribeScreen() {
         initComponents();
+    }
+
+    public CustomerSubscribeScreen(Customer customer) {
+        this.customer = customer;
+        fetchCustomerDetailsFromDatabase();
+        initComponents();
+        initializeButtonGroup();
+        loadAddresses();
+    }
+
+    private void fetchCustomerDetailsFromDatabase() {
+        if (customer != null && customer.getUsername() != null) {
+            Customer fullCustomer = Customer.getCustomerByUsername(customer.getUsername());
+            if (fullCustomer != null) {
+                this.customer = fullCustomer;
+            } else {
+                JOptionPane.showMessageDialog(this, "Customer details not found in the database!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid customer username!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void initializeButtonGroup() {
+        subscriptionTypeGroup = new ButtonGroup();
+        subscriptionTypeGroup.add(waterButton);
+        subscriptionTypeGroup.add(gasButton);
+        subscriptionTypeGroup.add(electricityButton);
+    }
+
+    private void loadAddresses() {
+        addressComboBox.removeAllItems();
+        for (Address address : customer.getAddresses()) {
+            addressComboBox.addItem(address.getAddressName());
+        }
+    }
+
+    private void updateSubscriptionTable(List<Subscription> subscriptions) {
+        DefaultTableModel model = (DefaultTableModel) subscriptionTable.getModel();
+        model.setRowCount(0); 
+
+        if (subscriptions != null) {
+            for (Subscription subscription : subscriptions) {
+                model.addRow(new Object[]{
+                    subscription.getSubscriptionId(),
+                    getSubscriptionTypeName(subscription.getSubscriptionTypeId()),
+                    customer.getAddresses().stream()
+                    .filter(a -> a.getAddressId() == subscription.getAddressId())
+                    .findFirst()
+                    .map(Address::getAddressName)
+                    .orElse("Unknown"),
+                    subscription.getStartDate(),
+                    subscription.isInterruptionStatus() ? "Yes" : "No"
+                });
+            }
+        }
+    }
+
+    private String getSubscriptionTypeName(int typeId) {
+        switch (typeId) {
+            case 1:
+                return "Water";
+            case 2:
+                return "Electricity";
+            case 3:
+                return "Natural Gas";
+            default:
+                return "Unknown";
+        }
     }
 
     /**
@@ -26,7 +103,6 @@ public class CustomerSubscribeScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        MenuButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         MenuButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -42,20 +118,12 @@ public class CustomerSubscribeScreen extends javax.swing.JFrame {
         subscriptionTable = new javax.swing.JTable();
         deleteButton = new javax.swing.JButton();
 
-        MenuButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Menu30.png"))); // NOI18N
-        MenuButton.setPreferredSize(new java.awt.Dimension(36, 36));
-        MenuButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MenuButtonActionPerformed(evt);
-            }
-        });
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(34, 40, 44));
         jPanel1.setFont(new java.awt.Font("SimSun-ExtG", 0, 12)); // NOI18N
 
-        MenuButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Menu30.png"))); // NOI18N
+        MenuButton1.setText("Menu");
         MenuButton1.setPreferredSize(new java.awt.Dimension(36, 36));
         MenuButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -65,7 +133,6 @@ public class CustomerSubscribeScreen extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("SimSun-ExtG", 1, 48)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/icons8-subscription-80.png"))); // NOI18N
         jLabel1.setText("  SUBSCRIPTIONS");
         jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -89,21 +156,25 @@ public class CustomerSubscribeScreen extends javax.swing.JFrame {
 
         searchButton.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
         searchButton.setText("Search");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
+            }
+        });
 
-        subscriptionTable.setFont(new java.awt.Font("SimSun-ExtG", 0, 12)); // NOI18N
         subscriptionTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Subscription ID", "Subscription Type", "Address"
+                "Subscription ID", "Subscription Type", "Address", "Start Date", "Interruption Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -114,6 +185,11 @@ public class CustomerSubscribeScreen extends javax.swing.JFrame {
 
         deleteButton.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
         deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -163,7 +239,7 @@ public class CustomerSubscribeScreen extends javax.swing.JFrame {
                         .addComponent(searchButton)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addComponent(deleteButton)
                 .addContainerGap())
         );
@@ -176,8 +252,8 @@ public class CustomerSubscribeScreen extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(MenuButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(123, 123, 123)
+                        .addComponent(MenuButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(98, 98, 98)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(56, 56, 56)
@@ -213,89 +289,62 @@ public class CustomerSubscribeScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void MenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuButtonActionPerformed
-        //        // Kaynağı yükle
-        //        URL resourceURL = this.getClass().getResource("/Icons/MenulIcon.png");
-        //        if (resourceURL == null) {
-            //            System.out.println("Kaynak dosyası bulunamadı!");
-            //        } else {
-            //            System.out.println("Kaynak dosyası bulundu: " + resourceURL.toExternalForm());
-            //        }
-        //        InputStream is = getClass().getResourceAsStream("/Icons/MenulIcon.png");
-        //        if (is == null) {
-            //            JOptionPane.showMessageDialog(this, "Kaynak dosyası bulunamadı!", "Hata", JOptionPane.ERROR_MESSAGE);
-            //        } else {
-            //            Image img = null;
-            //            try {
-                //                img = new ImageIcon(ImageIO.read(is)).getImage();
-                //            } catch (IOException ex) {
-                //                Logger.getLogger(AdminScreen.class.getName()).log(Level.SEVERE, null, ex);
-                //            }
-            //            JButton btnNewButton = new JButton(new ImageIcon(img));
-            //            contentPane.add(btnNewButton);
-            //            contentPane.revalidate();
-            //            contentPane.repaint();
-            //        }
-        //
-        //        // Resmi yükle ve boyutlandır
-        //        Image img = new ImageIcon(resourceURL).getImage();
-        //        Image scaledImg = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH); // 50x50 boyutunda
-        //
-        //        // Buton oluştur ve ikon ekle
-        //        JButton MenuButton = new JButton();
-        //        MenuButton.setIcon(new ImageIcon(scaledImg));
-        //        MenuButton.setBounds(100, 100, 100, 100); // Daha büyük boyut
-        //        MenuButton.setBackground(Color.WHITE); // Arka planı değiştir
-        //
-        //        // Butonu ekle
-        //        contentPane.add(MenuButton);
-        //
-        //        // Görünümü yenile
-        //        contentPane.revalidate();
-        //        contentPane.repaint();
-    }//GEN-LAST:event_MenuButtonActionPerformed
-
     private void MenuButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuButton1ActionPerformed
-        //        // Kaynağı yükle
-        //        URL resourceURL = this.getClass().getResource("/Icons/MenulIcon.png");
-        //        if (resourceURL == null) {
-            //            System.out.println("Kaynak dosyası bulunamadı!");
-            //        } else {
-            //            System.out.println("Kaynak dosyası bulundu: " + resourceURL.toExternalForm());
-            //        }
-        //        InputStream is = getClass().getResourceAsStream("/Icons/MenulIcon.png");
-        //        if (is == null) {
-            //            JOptionPane.showMessageDialog(this, "Kaynak dosyası bulunamadı!", "Hata", JOptionPane.ERROR_MESSAGE);
-            //        } else {
-            //            Image img = null;
-            //            try {
-                //                img = new ImageIcon(ImageIO.read(is)).getImage();
-                //            } catch (IOException ex) {
-                //                Logger.getLogger(AdminScreen.class.getName()).log(Level.SEVERE, null, ex);
-                //            }
-            //            JButton btnNewButton = new JButton(new ImageIcon(img));
-            //            contentPane.add(btnNewButton);
-            //            contentPane.revalidate();
-            //            contentPane.repaint();
-            //        }
-        //
-        //        // Resmi yükle ve boyutlandır
-        //        Image img = new ImageIcon(resourceURL).getImage();
-        //        Image scaledImg = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH); // 50x50 boyutunda
-        //
-        //        // Buton oluştur ve ikon ekle
-        //        JButton MenuButton = new JButton();
-        //        MenuButton.setIcon(new ImageIcon(scaledImg));
-        //        MenuButton.setBounds(100, 100, 100, 100); // Daha büyük boyut
-        //        MenuButton.setBackground(Color.WHITE); // Arka planı değiştir
-        //
-        //        // Butonu ekle
-        //        contentPane.add(MenuButton);
-        //
-        //        // Görünümü yenile
-        //        contentPane.revalidate();
-        //        contentPane.repaint();
+        CustomerScreen customerScreen = new CustomerScreen(customer);
+        customerScreen.setVisible(true);
+        dispose();
     }//GEN-LAST:event_MenuButton1ActionPerformed
+
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        int selectedAddressIndex = addressComboBox.getSelectedIndex();
+        if (selectedAddressIndex < 0) {
+            JOptionPane.showMessageDialog(this, "Please select an address.");
+            return;
+        }
+
+        int addressId = customer.getAddresses().get(selectedAddressIndex).getAddressId();
+        int subscriptionTypeId = 0;
+
+        if (waterButton.isSelected()) {
+            subscriptionTypeId = 1;
+        } else if (gasButton.isSelected()) {
+            subscriptionTypeId = 3;
+        } else if (electricityButton.isSelected()) {
+            subscriptionTypeId = 2;
+        }
+
+        List<Subscription> subscriptions = Subscription.getSubscriptionsByAddressAndType(addressId, subscriptionTypeId);
+        updateSubscriptionTable(subscriptions);
+    }//GEN-LAST:event_searchButtonActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        int selectedRow = subscriptionTable.getSelectedRow();
+        if (selectedRow >= 0) {
+            int subscriptionId = (int) subscriptionTable.getValueAt(selectedRow, 0);
+            Subscription.deleteSubscriptionFromDatabase(subscriptionId);
+
+            JOptionPane.showMessageDialog(this, "Subscription deleted successfully.");
+
+            int selectedAddressIndex = addressComboBox.getSelectedIndex();
+            if (selectedAddressIndex >= 0) {
+                int addressId = customer.getAddresses().get(selectedAddressIndex).getAddressId();
+                int subscriptionTypeId = 0;
+
+                if (waterButton.isSelected()) {
+                    subscriptionTypeId = 1;
+                } else if (gasButton.isSelected()) {
+                    subscriptionTypeId = 3;
+                } else if (electricityButton.isSelected()) {
+                    subscriptionTypeId = 2;
+                }
+
+                List<Subscription> subscriptions = Subscription.getSubscriptionsByAddressAndType(addressId, subscriptionTypeId);
+                updateSubscriptionTable(subscriptions);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a subscription to delete.");
+        }
+    }//GEN-LAST:event_deleteButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -334,7 +383,6 @@ public class CustomerSubscribeScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton MenuButton;
     private javax.swing.JButton MenuButton1;
     private javax.swing.JComboBox<String> addressComboBox;
     private javax.swing.JButton deleteButton;

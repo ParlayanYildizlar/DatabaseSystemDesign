@@ -4,17 +4,27 @@
  */
 package InvoiceTrackingSystem;
 
+import CorePackage.Customer;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author 90554
  */
 public class ChangePasswordScreen extends javax.swing.JFrame {
 
+    private Customer customer;
     /**
      * Creates new form ChangePasswordScreen
      */
     public ChangePasswordScreen() {
         initComponents();
+    }
+    
+    public ChangePasswordScreen(Customer customer){
+        this.customer = customer;
+        initComponents();
+        System.out.println("Customer password: " + customer.getPassword());
     }
 
     /**
@@ -34,8 +44,8 @@ public class ChangePasswordScreen extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         ChangeBttn = new javax.swing.JButton();
-        OldPasswordAgainTextField = new javax.swing.JTextField();
         NewPasswordTextField = new javax.swing.JTextField();
+        NewPasswordAgainTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -50,12 +60,17 @@ public class ChangePasswordScreen extends javax.swing.JFrame {
         AddressNameLabel.setText("Old Password:");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel1.setText("Old Password:");
+        jLabel1.setText("New Password:");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("New Password:");
 
-        ChangeBttn.setText("Add");
+        ChangeBttn.setText("Change");
+        ChangeBttn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ChangeBttnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -74,11 +89,11 @@ public class ChangePasswordScreen extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(NewPasswordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(NewPasswordAgainTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(OldPasswordAgainTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(NewPasswordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -91,11 +106,11 @@ public class ChangePasswordScreen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(OldPasswordAgainTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(NewPasswordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(NewPasswordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(NewPasswordAgainTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addComponent(ChangeBttn)
                 .addContainerGap())
@@ -136,6 +151,35 @@ public class ChangePasswordScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void ChangeBttnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChangeBttnActionPerformed
+        String oldPassword = OldPasswordTextField.getText();
+        String newPassword = NewPasswordTextField.getText();
+        String confirmNewPassword = NewPasswordAgainTextField.getText();
+
+        if (oldPassword.isEmpty() || newPassword.isEmpty() || confirmNewPassword.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "All fields must be filled.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!Customer.isPasswordCorrect(customer.getUsername(), oldPassword)) {
+            JOptionPane.showMessageDialog(this, "Old password is incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!newPassword.equals(confirmNewPassword)) {
+            JOptionPane.showMessageDialog(this, "New passwords do not match.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        customer.setPassword(newPassword);
+        customer.updatePasswordInDatabase();
+        JOptionPane.showMessageDialog(this, "Password changed successfully!");
+
+        CustomerInformationScreen customerInformationScreen = new CustomerInformationScreen(customer);
+        customerInformationScreen.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_ChangeBttnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -174,8 +218,8 @@ public class ChangePasswordScreen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AddressNameLabel;
     private javax.swing.JButton ChangeBttn;
+    private javax.swing.JTextField NewPasswordAgainTextField;
     private javax.swing.JTextField NewPasswordTextField;
-    private javax.swing.JTextField OldPasswordAgainTextField;
     private javax.swing.JTextField OldPasswordTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

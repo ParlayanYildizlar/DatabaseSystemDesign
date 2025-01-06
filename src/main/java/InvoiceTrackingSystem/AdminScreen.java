@@ -1,39 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package InvoiceTrackingSystem;
 
 import CorePackage.Admin;
-import java.awt.Color;
 import java.awt.Image;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author bayra
- */
 public class AdminScreen extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AdminScreen
-     */
+    private Admin admin;
+
     public AdminScreen() {
         initComponents();
+
     }
 
-    AdminScreen(Admin admin) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public AdminScreen(Admin admin) {
+        this.admin = admin;
+        initComponents();
+        setupAdminDetails();
+    }
+
+    private void setupAdminDetails() {
+        if (admin != null) {
+            setTitle("Welcome Admin: " + admin.getUsername());
+        }
     }
 
     /**
@@ -63,6 +57,7 @@ public class AdminScreen extends javax.swing.JFrame {
         RequestButton = new javax.swing.JButton();
         SubscriptionsButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        ınvoiceButton = new javax.swing.JButton();
 
         jMenu3.setText("File");
         jMenuBar2.add(jMenu3);
@@ -93,7 +88,7 @@ public class AdminScreen extends javax.swing.JFrame {
         jLabel1.setText("POWER FLOW");
         jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        MenuButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Menu30.png"))); // NOI18N
+        MenuButton.setText("Log Out");
         MenuButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuButtonActionPerformed(evt);
@@ -101,7 +96,6 @@ public class AdminScreen extends javax.swing.JFrame {
         });
 
         UsersButton.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
-        UsersButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/UserIcon.png"))); // NOI18N
         UsersButton.setText("Users");
         UsersButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,14 +103,21 @@ public class AdminScreen extends javax.swing.JFrame {
             }
         });
 
-        InterruptsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Interrupts.png"))); // NOI18N
         InterruptsButton.setText("Interrupts");
+        InterruptsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InterruptsButtonActionPerformed(evt);
+            }
+        });
 
-        AnnouncementsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Announcements.png"))); // NOI18N
         AnnouncementsButton.setText("Announcements");
+        AnnouncementsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AnnouncementsButtonActionPerformed(evt);
+            }
+        });
 
         RequestButton.setFont(new java.awt.Font("SimSun-ExtG", 0, 14)); // NOI18N
-        RequestButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/RequestService.png"))); // NOI18N
         RequestButton.setText("Requests");
         RequestButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -124,11 +125,22 @@ public class AdminScreen extends javax.swing.JFrame {
             }
         });
 
-        SubscriptionsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Subscriptions.png"))); // NOI18N
         SubscriptionsButton.setText("Subscriptions");
+        SubscriptionsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SubscriptionsButtonActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("SimSun-ExtG", 2, 12)); // NOI18N
         jLabel2.setText("Made by PowerFlow");
+
+        ınvoiceButton.setText("Invoice");
+        ınvoiceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ınvoiceButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -142,44 +154,49 @@ public class AdminScreen extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(MenuButton))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(196, 196, 196)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addGap(77, 77, 77)
-                                        .addComponent(SubscriptionsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(53, 53, 53)
-                                        .addComponent(AnnouncementsButton)
-                                        .addGap(75, 75, 75))
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                            .addComponent(UsersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(45, 45, 45)
-                                            .addComponent(RequestButton)
-                                            .addGap(51, 51, 51)
-                                            .addComponent(InterruptsButton))))))
-                        .addGap(0, 236, Short.MAX_VALUE)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(UsersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(RequestButton, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(51, 51, 51)
+                                        .addComponent(InterruptsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(147, 147, 147)
+                                .addComponent(SubscriptionsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(65, 65, 65)
+                                .addComponent(AnnouncementsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(53, 53, 53)
+                                .addComponent(ınvoiceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(MenuButton)))
+                        .addGap(0, 188, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(MenuButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(71, 71, 71)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(InterruptsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(RequestButton, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(UsersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(59, 59, 59)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AnnouncementsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(SubscriptionsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(MenuButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(60, 60, 60)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(InterruptsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(RequestButton, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(UsersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(59, 59, 59)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(AnnouncementsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(SubscriptionsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(429, 429, 429)
+                        .addComponent(ınvoiceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addContainerGap())
@@ -200,57 +217,53 @@ public class AdminScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void MenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuButtonActionPerformed
-//        // Kaynağı yükle
-//        URL resourceURL = this.getClass().getResource("/Icons/MenulIcon.png");
-//        if (resourceURL == null) {
-//            System.out.println("Kaynak dosyası bulunamadı!");
-//        } else {
-//            System.out.println("Kaynak dosyası bulundu: " + resourceURL.toExternalForm());
-//        }
-//        InputStream is = getClass().getResourceAsStream("/Icons/MenulIcon.png");
-//        if (is == null) {
-//            JOptionPane.showMessageDialog(this, "Kaynak dosyası bulunamadı!", "Hata", JOptionPane.ERROR_MESSAGE);
-//        } else {
-//            Image img = null;
-//            try {
-//                img = new ImageIcon(ImageIO.read(is)).getImage();
-//            } catch (IOException ex) {
-//                Logger.getLogger(AdminScreen.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            JButton btnNewButton = new JButton(new ImageIcon(img));
-//            contentPane.add(btnNewButton);
-//            contentPane.revalidate();
-//            contentPane.repaint();
-//        }
-//
-//        // Resmi yükle ve boyutlandır
-//        Image img = new ImageIcon(resourceURL).getImage();
-//        Image scaledImg = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH); // 50x50 boyutunda
-//
-//        // Buton oluştur ve ikon ekle
-//        JButton MenuButton = new JButton();
-//        MenuButton.setIcon(new ImageIcon(scaledImg));
-//        MenuButton.setBounds(100, 100, 100, 100); // Daha büyük boyut
-//        MenuButton.setBackground(Color.WHITE); // Arka planı değiştir
-//
-//        // Butonu ekle
-//        contentPane.add(MenuButton);
-//
-//        // Görünümü yenile
-//        contentPane.revalidate();
-//        contentPane.repaint();
+        StartScreen startScreen = new StartScreen();
+        startScreen.setVisible(true);
+        dispose();
     }//GEN-LAST:event_MenuButtonActionPerformed
 
     private void UsersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsersButtonActionPerformed
-//        JButton UserButton = new JButton("Users");
-//        Image img = new ImageIcon(this.getClass().getResource("/Icons/UserIcon.png")).getImage();
-//        UserButton.setBounds(174,32,185,81);
-//        contentPane.add(UserButton);
+
+        AdminUsersScreen adminUsersScreen = new AdminUsersScreen();
+        adminUsersScreen.setVisible(true);
+        dispose();
     }//GEN-LAST:event_UsersButtonActionPerformed
 
     private void RequestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RequestButtonActionPerformed
-        // TODO add your handling code here:
+
+        AdminRequestScreen adminRequestScreen = new AdminRequestScreen(admin);
+        adminRequestScreen.setVisible(true);
+        dispose();
     }//GEN-LAST:event_RequestButtonActionPerformed
+
+    private void AnnouncementsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnnouncementsButtonActionPerformed
+
+        AdminAnnouncementsScreen adminScreen = new AdminAnnouncementsScreen(admin);
+        adminScreen.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_AnnouncementsButtonActionPerformed
+
+    private void SubscriptionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubscriptionsButtonActionPerformed
+
+        AdminSubscribeScreen adminSubscribeScreen = new AdminSubscribeScreen(admin);
+        adminSubscribeScreen.setVisible(true);
+        dispose();
+
+
+    }//GEN-LAST:event_SubscriptionsButtonActionPerformed
+
+    private void InterruptsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InterruptsButtonActionPerformed
+
+        AdminInterruptionScreen adminInterruptionScreen = new AdminInterruptionScreen(admin);
+        adminInterruptionScreen.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_InterruptsButtonActionPerformed
+
+    private void ınvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ınvoiceButtonActionPerformed
+        AdminInvoiceScreen adminInvoiceScreen = new AdminInvoiceScreen(admin);
+        adminInvoiceScreen.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_ınvoiceButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -278,7 +291,7 @@ public class AdminScreen extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(AdminScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-       
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -307,39 +320,40 @@ public class AdminScreen extends javax.swing.JFrame {
     private java.awt.Menu menu1;
     private java.awt.Menu menu2;
     private java.awt.MenuBar menuBar1;
+    private javax.swing.JButton ınvoiceButton;
     // End of variables declaration//GEN-END:variables
 
     private static class MenuBarWithIconDemo {
 
         public MenuBarWithIconDemo() {
         }
-        
-         public static void main(String[] args) {
-        // JFrame oluştur
-        JFrame frame = new JFrame("MenuBar with Icon");
-        frame.setSize(400, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // JMenuBar oluştur
-        JMenuBar menuBar = new JMenuBar();
+        public static void main(String[] args) {
+            // JFrame oluştur
+            JFrame frame = new JFrame("MenuBar with Icon");
+            frame.setSize(400, 300);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Resimli bir buton ekle
-        URL iconURL = MenuBarWithIconDemo.class.getResource("/Icons/icon.png");
-        if (iconURL != null) {
-            Image img = new ImageIcon(iconURL).getImage();
-            Image scaledImg = img.getScaledInstance(20, 20, Image.SCALE_SMOOTH); // İkonu yeniden boyutlandır
-            JButton button = new JButton(new ImageIcon(scaledImg));
-            button.setToolTipText("Menü Butonu");
-            menuBar.add(button);
-        } else {
-            System.out.println("Kaynak dosyası bulunamadı!");
+            // JMenuBar oluştur
+            JMenuBar menuBar = new JMenuBar();
+
+            // Resimli bir buton ekle
+            URL iconURL = MenuBarWithIconDemo.class.getResource("/Icons/icon.png");
+            if (iconURL != null) {
+                Image img = new ImageIcon(iconURL).getImage();
+                Image scaledImg = img.getScaledInstance(20, 20, Image.SCALE_SMOOTH); // İkonu yeniden boyutlandır
+                JButton button = new JButton(new ImageIcon(scaledImg));
+                button.setToolTipText("Menü Butonu");
+                menuBar.add(button);
+            } else {
+                System.out.println("Kaynak dosyası bulunamadı!");
+            }
+
+            // Menü çubuğunu pencereye ekle
+            frame.setJMenuBar(menuBar);
+
+            // Pencereyi görünür yap
+            frame.setVisible(true);
         }
-
-        // Menü çubuğunu pencereye ekle
-        frame.setJMenuBar(menuBar);
-
-        // Pencereyi görünür yap
-        frame.setVisible(true);
-    }
     }
 }

@@ -4,17 +4,87 @@
  */
 package InvoiceTrackingSystem;
 
+import CorePackage.Address;
+import CorePackage.City;
+import CorePackage.Customer;
+import CorePackage.Neighborhood;
+import java.awt.Image;
+import java.util.List;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author 90554
  */
 public class AddressScreen extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AddressScreen
-     */
+    private Customer customer;
+    private Address address;
+    private boolean isUpdateMode;
+
     public AddressScreen() {
         initComponents();
+        ImageIcon icon1 = new ImageIcon("C:\\Users\\bayra\\Downloads\\Address.png");
+        Image img1 = icon1.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        icon1.setImage(img1);
+        AddressLabel.setIcon(icon1);
+    }
+
+    public AddressScreen(Customer customer) {
+        this.customer = customer;
+        this.address = null;
+        this.isUpdateMode = false;
+        initComponents();
+        loadCities();
+        AddChangeBttn.setText("Add");
+    }
+
+    public AddressScreen(Customer customer, Address address) {
+        this.customer = customer;
+        this.address = address;
+        this.isUpdateMode = address != null;
+        initComponents();
+        loadCities();
+
+        if (isUpdateMode) {
+            populateAddressDetails(); 
+            AddChangeBttn.setText("Update");
+        } else {
+            AddChangeBttn.setText("Add");
+        }
+    }
+
+    private void loadCities() {
+        CityComboBox.removeAllItems();
+        List<City> cities = City.getAllCities();
+        for (City city : cities) {
+            CityComboBox.addItem(city.getCityName());
+        }
+    }
+
+    private void loadNeighborhoods() {
+        NeighbourComboBox.removeAllItems();
+        String selectedCity = (String) CityComboBox.getSelectedItem();
+        if (selectedCity != null) {
+            List<Neighborhood> neighborhoods = Neighborhood.getNeighborhoodsByCityName(selectedCity);
+            for (Neighborhood neighborhood : neighborhoods) {
+                NeighbourComboBox.addItem(neighborhood.getNeighborhoodName());
+            }
+        }
+    }
+
+    private void populateAddressDetails() {
+        AddressNameTextField.setText(address.getAddressName());
+        OpenAddressTextField.setText(address.getOpenAddress());
+
+        String cityName = City.getCityNameById(address.getNeighborhood().getCityId());
+        if (cityName != null) {
+            CityComboBox.setSelectedItem(cityName);
+        }
+
+        loadNeighborhoods();
+        NeighbourComboBox.setSelectedItem(address.getNeighborhood().getNeighborhoodName());
     }
 
     /**
@@ -27,7 +97,7 @@ public class AddressScreen extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        AddressLabel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         AddressNameLabel = new javax.swing.JLabel();
         AddressNameTextField = new javax.swing.JTextField();
@@ -43,24 +113,36 @@ public class AddressScreen extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(34, 40, 44));
 
-        jLabel4.setFont(new java.awt.Font("SimSun", 1, 24)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Addres");
-        jLabel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        AddressLabel.setFont(new java.awt.Font("SimSun-ExtG", 1, 24)); // NOI18N
+        AddressLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        AddressLabel.setText("ADDRES");
+        AddressLabel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        AddressNameLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        AddressNameLabel.setFont(new java.awt.Font("SimSun-ExtG", 1, 12)); // NOI18N
         AddressNameLabel.setText("Address Name:");
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        CityComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CityComboBoxActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("SimSun-ExtG", 1, 12)); // NOI18N
         jLabel1.setText("City:");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("SimSun-ExtG", 1, 12)); // NOI18N
         jLabel2.setText("Neighbour:");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("SimSun-ExtG", 1, 12)); // NOI18N
         jLabel3.setText("Open Address");
 
+        AddChangeBttn.setFont(new java.awt.Font("SimSun-ExtG", 0, 12)); // NOI18N
         AddChangeBttn.setText("Add");
+        AddChangeBttn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddChangeBttnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -98,7 +180,7 @@ public class AddressScreen extends javax.swing.JFrame {
                     .addComponent(AddressNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(AddressNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CityComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
@@ -122,14 +204,14 @@ public class AddressScreen extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(AddressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(jLabel4)
+                .addComponent(AddressLabel)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -148,6 +230,43 @@ public class AddressScreen extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void AddChangeBttnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddChangeBttnActionPerformed
+        String addressName = AddressNameTextField.getText().trim();
+        String openAddress = OpenAddressTextField.getText().trim();
+        String cityName = (String) CityComboBox.getSelectedItem();
+        String neighborhoodName = (String) NeighbourComboBox.getSelectedItem();
+
+        if (addressName.isEmpty() || openAddress.isEmpty() || cityName == null || neighborhoodName == null) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields!");
+            return;
+        }
+
+        int neighborhoodId = Neighborhood.getNeighborhoodIdByNameAndCity(neighborhoodName, cityName);
+        if (neighborhoodId == 0) {
+            JOptionPane.showMessageDialog(this, "Invalid neighborhood or city selected!");
+            return;
+        }
+
+        if (isUpdateMode) {
+            address.setAddressName(addressName);
+            address.setOpenAddress(openAddress);
+            address.getNeighborhood().setNeighborhoodId(neighborhoodId);
+            Address.updateAddress(address, neighborhoodId);
+            JOptionPane.showMessageDialog(this, "Address updated successfully!");
+        } else {
+            Address newAddress = new Address(0, addressName, openAddress, new Neighborhood(neighborhoodId, neighborhoodName, 0));
+            customer.addAddress(newAddress, neighborhoodId);
+            JOptionPane.showMessageDialog(this, "Address added successfully!");
+        }
+
+        dispose();
+        new CustomerInformationScreen(customer).setVisible(true);
+    }//GEN-LAST:event_AddChangeBttnActionPerformed
+
+    private void CityComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CityComboBoxActionPerformed
+        loadNeighborhoods();
+    }//GEN-LAST:event_CityComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -186,6 +305,7 @@ public class AddressScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddChangeBttn;
+    private javax.swing.JLabel AddressLabel;
     private javax.swing.JLabel AddressNameLabel;
     private javax.swing.JTextField AddressNameTextField;
     private javax.swing.JComboBox<String> CityComboBox;
@@ -194,7 +314,6 @@ public class AddressScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables

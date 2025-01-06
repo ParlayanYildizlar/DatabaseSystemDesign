@@ -2,7 +2,6 @@ package InvoiceTrackingSystem;
 
 import CorePackage.Admin;
 import CorePackage.Customer;
-import CorePackage.Database;
 import CorePackage.User;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,15 +17,23 @@ public class StartScreen extends javax.swing.JFrame {
 
     public static User account;
 
-    // Radio Button'ları Tanımlayın
     private ButtonGroup userTypeGroup;
 
     public StartScreen() {
         initComponents();
         setupFrame();
-        //debugResourceLoading();
+        NameSurnameLabel.setVisible(false);
+        NameTextField.setVisible(false);
+        SurnameTextField.setVisible(false);
+        UsernameLabel.setVisible(false);
+        UsernameTextField.setVisible(false);
+        PasswordLabel.setVisible(false);
+        PasswordTextField.setVisible(false);
+        PhoneNumberLabel.setVisible(false);
+        PhoneNoTextField.setVisible(false);
+        IDNumberLabel.setVisible(false);
+        IDNumberTextField.setVisible(false);
 
-        // ButtonGroup ile radio button'ları grupla
         ButtonGroup userTypeGroup = new ButtonGroup();
         userTypeGroup.add(AdminButton);
         userTypeGroup.add(CustomerButton);
@@ -34,78 +41,19 @@ public class StartScreen extends javax.swing.JFrame {
     }
 
     private void setupFrame() {
-        int newWidth = 965;  // Bu değeri artırıp azaltabilirsiniz
+        int newWidth = 965;
         int newHeight = 657;
         setTitle("Logo Ekranı");
-        //setSize(800, 600);
         setSize(newWidth, newHeight);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        // Panel boyutunu ve arka plan rengini ayarla
         StartPanel.setPreferredSize(new Dimension(965, 657));
         StartPanel.setBackground(new Color(34, 40, 44));
 
-        // Absolute positioning için null layout kullan
         StartPanel.setLayout(null);
     }
 
-//    private void debugResourceLoading() {
-//        // 1. Çalışma dizinini kontrol et
-//        System.out.println("Çalışma dizini: " + System.getProperty("user.dir"));
-//
-//        // 2. Farklı yolları dene ve sonuçları raporla
-//        String[] possiblePaths = {
-//            "/images/logo.png",
-//            "images/logo.png",
-//            "../images/logo.png",
-//            "./images/logo.png"
-//        };
-//
-//        for (String path : possiblePaths) {
-//            System.out.println("\nPath deneniyor: " + path);
-//            // Class loader ile dene
-//            System.out.println("ClassLoader.getResource: "
-//                    + getClass().getClassLoader().getResource(path));
-//            // GetResource ile dene
-//            System.out.println("Class.getResource: "
-//                    + getClass().getResource(path));
-//        }
-//
-//        // 3. Dosya sisteminde fiziksel olarak kontrol et
-//        File file = new File("src/images/logo.png");
-//        System.out.println("\nDosya fiziksel olarak var mı: " + file.exists());
-//        if (file.exists()) {
-//            System.out.println("Tam dosya yolu: " + file.getAbsolutePath());
-//        }
-//
-//        // 4. Logo yüklemeyi dene
-//        try {
-//            // Önce File kullanarak dene
-//            if (file.exists()) {
-//                ImageIcon logoIcon = new ImageIcon(file.getAbsolutePath());
-//                logoLabel.setIcon(logoIcon);
-//                System.out.println("Logo dosyadan yüklendi");
-//            } // Resource olarak dene
-//            else {
-//                var resourceUrl = getClass().getResource("/images/logo.png");
-//                if (resourceUrl != null) {
-//                    ImageIcon logoIcon = new ImageIcon(resourceUrl);
-//                    logoLabel.setIcon(logoIcon);
-//                    System.out.println("Logo resource'dan yüklendi");
-//                } else {
-//                    logoLabel.setText("Logo bulunamadı!");
-//                    System.err.println("Logo dosyası bulunamadı!");
-//                }
-//            }
-//            logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-//
-//        } catch (Exception e) {
-//            System.err.println("Logo yükleme hatası: " + e);
-//            e.printStackTrace();
-//            logoLabel.setText("Logo yüklenemedi!");
-//        }
-//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -130,29 +78,28 @@ public class StartScreen extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         SignUpPanel = new javax.swing.JPanel();
         SignUpLabel = new javax.swing.JLabel();
-        nameSurnameLabel = new javax.swing.JLabel();
+        NameSurnameLabel = new javax.swing.JLabel();
         UsernameLabel = new javax.swing.JLabel();
         PasswordLabel = new javax.swing.JLabel();
         PhoneNumberLabel = new javax.swing.JLabel();
-        NameSurnameTextField = new javax.swing.JTextField();
+        SurnameTextField = new javax.swing.JTextField();
         UsernameTextField = new javax.swing.JTextField();
         PhoneNoTextField = new javax.swing.JTextField();
         SignUpButton = new javax.swing.JButton();
         IDNumberLabel = new javax.swing.JLabel();
         IDNumberTextField = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        NameSurnameTextField1 = new javax.swing.JTextField();
+        PasswordTextField = new javax.swing.JPasswordField();
+        NameTextField = new javax.swing.JTextField();
         AccTypeLabel = new javax.swing.JLabel();
         AdminButton = new javax.swing.JRadioButton();
         CustomerButton = new javax.swing.JRadioButton();
         SignInLayeredPanel = new javax.swing.JLayeredPane();
         SignInLabel = new javax.swing.JLabel();
         UsernameLabel1 = new javax.swing.JLabel();
-        UsernameTextField1 = new javax.swing.JTextField();
+        UsernameSignInTextField = new javax.swing.JTextField();
         PasswordLabel1 = new javax.swing.JLabel();
         SignInButton = new javax.swing.JButton();
-        ForgotPasswordButton = new javax.swing.JRadioButton();
-        jPasswordSignIn = new javax.swing.JPasswordField();
+        PasswordSignInTextField = new javax.swing.JPasswordField();
         LogoLabel = new javax.swing.JLabel();
 
         jTextArea1.setColumns(20);
@@ -176,6 +123,7 @@ public class StartScreen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         StartPanel.setBackground(new java.awt.Color(34, 40, 44));
+        StartPanel.setPreferredSize(new java.awt.Dimension(965, 657));
         StartPanel.setLayout(null);
 
         jLabel1.setBackground(java.awt.SystemColor.controlDkShadow);
@@ -187,7 +135,7 @@ public class StartScreen extends javax.swing.JFrame {
         jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         StartPanel.add(jLabel1);
-        jLabel1.setBounds(296, 88, 549, 82);
+        jLabel1.setBounds(220, 60, 549, 82);
 
         SignUpPanel.setBackground(new java.awt.Color(44, 47, 50));
 
@@ -195,7 +143,7 @@ public class StartScreen extends javax.swing.JFrame {
         SignUpLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         SignUpLabel.setText("SIGN UP");
 
-        nameSurnameLabel.setText("Name Surname");
+        NameSurnameLabel.setText("Name Surname");
 
         UsernameLabel.setText("Username");
 
@@ -203,9 +151,9 @@ public class StartScreen extends javax.swing.JFrame {
 
         PhoneNumberLabel.setText("Phone Number");
 
-        NameSurnameTextField.addActionListener(new java.awt.event.ActionListener() {
+        SurnameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NameSurnameTextFieldActionPerformed(evt);
+                SurnameTextFieldActionPerformed(evt);
             }
         });
 
@@ -219,16 +167,15 @@ public class StartScreen extends javax.swing.JFrame {
 
         IDNumberLabel.setText("National ID Number");
 
-        jPasswordField1.setText("jPasswordField1");
-        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
+        PasswordTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField1ActionPerformed(evt);
+                PasswordTextFieldActionPerformed(evt);
             }
         });
 
-        NameSurnameTextField1.addActionListener(new java.awt.event.ActionListener() {
+        NameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NameSurnameTextField1ActionPerformed(evt);
+                NameTextFieldActionPerformed(evt);
             }
         });
 
@@ -264,7 +211,7 @@ public class StartScreen extends javax.swing.JFrame {
                             .addGroup(SignUpPanelLayout.createSequentialGroup()
                                 .addGap(56, 56, 56)
                                 .addComponent(SignUpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(nameSurnameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(NameSurnameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, SignUpPanelLayout.createSequentialGroup()
                             .addGap(40, 40, 40)
@@ -277,11 +224,11 @@ public class StartScreen extends javax.swing.JFrame {
                                     .addComponent(UsernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(PhoneNoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(IDNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(PasswordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(SignUpPanelLayout.createSequentialGroup()
-                                        .addComponent(NameSurnameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(NameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(NameSurnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(SurnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(SignUpPanelLayout.createSequentialGroup()
                                         .addComponent(AdminButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -300,11 +247,11 @@ public class StartScreen extends javax.swing.JFrame {
                     .addComponent(CustomerButton)
                     .addComponent(AdminButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(nameSurnameLabel)
+                .addComponent(NameSurnameLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(NameSurnameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(NameSurnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(NameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(SurnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(UsernameLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -312,7 +259,7 @@ public class StartScreen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(PasswordLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(PasswordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14)
                 .addComponent(PhoneNumberLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -345,22 +292,12 @@ public class StartScreen extends javax.swing.JFrame {
             }
         });
 
-        ForgotPasswordButton.setText("Forgot Password?");
-        ForgotPasswordButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ForgotPasswordButtonActionPerformed(evt);
-            }
-        });
-
-        jPasswordSignIn.setText("jPasswordField2");
-
         SignInLayeredPanel.setLayer(SignInLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         SignInLayeredPanel.setLayer(UsernameLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        SignInLayeredPanel.setLayer(UsernameTextField1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        SignInLayeredPanel.setLayer(UsernameSignInTextField, javax.swing.JLayeredPane.DEFAULT_LAYER);
         SignInLayeredPanel.setLayer(PasswordLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         SignInLayeredPanel.setLayer(SignInButton, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        SignInLayeredPanel.setLayer(ForgotPasswordButton, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        SignInLayeredPanel.setLayer(jPasswordSignIn, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        SignInLayeredPanel.setLayer(PasswordSignInTextField, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout SignInLayeredPanelLayout = new javax.swing.GroupLayout(SignInLayeredPanel);
         SignInLayeredPanel.setLayout(SignInLayeredPanelLayout);
@@ -373,12 +310,11 @@ public class StartScreen extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SignInLayeredPanelLayout.createSequentialGroup()
                 .addContainerGap(28, Short.MAX_VALUE)
                 .addGroup(SignInLayeredPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(ForgotPasswordButton)
-                    .addComponent(UsernameTextField1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(UsernameSignInTextField, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(PasswordLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(UsernameLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(SignInLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPasswordSignIn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE))
+                    .addComponent(PasswordSignInTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE))
                 .addGap(32, 32, 32))
         );
         SignInLayeredPanelLayout.setVerticalGroup(
@@ -389,14 +325,12 @@ public class StartScreen extends javax.swing.JFrame {
                 .addGap(54, 54, 54)
                 .addComponent(UsernameLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(UsernameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(UsernameSignInTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24)
                 .addComponent(PasswordLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jPasswordSignIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ForgotPasswordButton)
-                .addGap(24, 24, 24)
+                .addComponent(PasswordSignInTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51)
                 .addComponent(SignInButton)
                 .addContainerGap(51, Short.MAX_VALUE))
         );
@@ -425,7 +359,7 @@ public class StartScreen extends javax.swing.JFrame {
         );
 
         StartPanel.add(jPanel1);
-        jPanel1.setBounds(26, 228, 905, 447);
+        jPanel1.setBounds(30, 170, 905, 423);
         StartPanel.add(LogoLabel);
         LogoLabel.setBounds(83, 54, 181, 156);
 
@@ -443,141 +377,141 @@ public class StartScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void NameSurnameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameSurnameTextFieldActionPerformed
+    private void SurnameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SurnameTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_NameSurnameTextFieldActionPerformed
+    }//GEN-LAST:event_SurnameTextFieldActionPerformed
 
     private void CustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CustomerButtonActionPerformed
-        // Customer butonu seçildiğinde yapılacak işlemler
+        NameSurnameLabel.setVisible(true);
+        NameTextField.setVisible(true);
+        SurnameTextField.setVisible(true);
+        UsernameLabel.setVisible(true);
+        UsernameTextField.setVisible(true);
+        PasswordLabel.setVisible(true);
+        PasswordTextField.setVisible(true);
+        PhoneNumberLabel.setVisible(true);
+        PhoneNoTextField.setVisible(true);
+        IDNumberLabel.setVisible(true);
+        IDNumberTextField.setVisible(true);
         JOptionPane.showMessageDialog(this, "Customer account selected!", "Information", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_CustomerButtonActionPerformed
 
     private void SignInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignInButtonActionPerformed
-        String password = String.valueOf(jPasswordSignIn.getPassword());
-        User user = Database.loginVerification(UsernameTextField1.getText(), password);
+        if (UsernameSignInTextField.getText().equals("") || PasswordSignInTextField.getText().equalsIgnoreCase("")) {
+            JOptionPane.showMessageDialog(this, "Fill All Entries.", "Failure", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        } else {
+            User u = new User();
+            if (!u.isUsernameExists(UsernameSignInTextField.getText())) {
+                JOptionPane.showMessageDialog(this, "This user doesn't exist!", "Failure", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
 
-        if (user == null) {
-            JOptionPane.showMessageDialog(this, "This user does not exist!",
-                    "User Not Found", JOptionPane.ERROR_MESSAGE);
-        } else if (user instanceof Admin admin) {
-            StartScreen.account = user;
-            UsernameTextField1.setText("");
-            jPasswordSignIn.setText("");
+            if (!u.isCredentialsValid(UsernameSignInTextField.getText(), PasswordSignInTextField.getText())) {
+                JOptionPane.showMessageDialog(this, "Invalid credentials!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-            AdminScreen adminPage = new AdminScreen(admin);
-            adminPage.setVisible(true);
-            dispose();
+            if (u.isAdmin(UsernameSignInTextField.getText())) {
+                Admin admin = new Admin();
+                admin.setUsername(UsernameSignInTextField.getText());
+                admin.setPassword(String.valueOf(PasswordSignInTextField.getPassword()));
 
-        } else if (user instanceof Customer) {
-            StartScreen.account = user;
-            UsernameTextField1.setText("");
-            jPasswordSignIn.setText("");
+                AdminScreen adminScreen = new AdminScreen(admin);
+                adminScreen.setVisible(true);
+                this.dispose();
+            } else if (u.isCustomer(UsernameSignInTextField.getText())) {
+                JOptionPane.showMessageDialog(this, "Welcome Customer!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-            CustomerScreen customerPage = new CustomerScreen((Customer) user);
-            customerPage.setVisible(true);
-            dispose();
-
+                Customer customer = new Customer();
+                customer.setUsername(UsernameSignInTextField.getText());
+                CustomerScreen customerScreen = new CustomerScreen(customer);
+                customerScreen.setVisible(true);
+                this.dispose();
+            }
         }
-
-
     }//GEN-LAST:event_SignInButtonActionPerformed
 
 
-    private void ForgotPasswordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ForgotPasswordButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ForgotPasswordButtonActionPerformed
-
-    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-        // TODO add your handling code here:
-        // JPasswordField'den girilen şifreyi al
-        char[] passwordChars = jPasswordField1.getPassword(); // jPasswordField1, şifre alanının ID'sidir
+    private void PasswordTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordTextFieldActionPerformed
+        char[] passwordChars = PasswordTextField.getPassword();
         String password = new String(passwordChars);
 
-        // Şifre doğrulama regex'i: En az 8 karakter, 1 büyük harf, 1 küçük harf, 1 rakam, 1 özel karakter
         String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
 
-        // Şifre regex ile uyumlu mu?
         if (password.matches(regex)) {
             JOptionPane.showMessageDialog(this, "Valid Password!", "Information", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this, "Invalid Password! Password must be at least 8 characters, contain 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character.", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        // Şifreyi konsola yazdırmak isterseniz (şifre gizliliği ihlali olabilir):
         System.out.println("Entered Password: " + password);
 
-        // Girilen şifreyi temizle (güvenlik için)
-        jPasswordField1.setText("");
-    }//GEN-LAST:event_jPasswordField1ActionPerformed
+        PasswordTextField.setText("");
+    }//GEN-LAST:event_PasswordTextFieldActionPerformed
 
     private void AdminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminButtonActionPerformed
-        // Admin butonu seçildiğinde yapılacak işlemler
+        UsernameLabel.setVisible(true);
+        UsernameTextField.setVisible(true);
+        PasswordLabel.setVisible(true);
+        PasswordTextField.setVisible(true);
         JOptionPane.showMessageDialog(this, "Admin account selected!", "Information", JOptionPane.INFORMATION_MESSAGE);
-
-        if (AdminButton.getText().equals("") || AdminButton.getText().equals("") || NameSurnameTextField.getText().equals("")) {
-
-            JOptionPane.showMessageDialog(this, "Fill All Entries.",
-                    "Failure", JOptionPane.INFORMATION_MESSAGE);
-
-        } else if (Database.checkUsername(UsernameTextField.getText())) {
-            JOptionPane.showMessageDialog(this, "Username Already Exist.",
-                    "Failure", JOptionPane.INFORMATION_MESSAGE);
-
-            /*
-            AuthenticationPageForAdmin authenticationPage = new AuthenticationPageForAdmin(NameSurnameTextField.getText(),
-                    UsernameTextField.getText(), jPasswordField1.getText());
-            authenticationPage.show();
-            dispose();
-             */
-        }
     }//GEN-LAST:event_AdminButtonActionPerformed
 
     private void SignUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignUpButtonActionPerformed
-        if (UsernameTextField.getText().equals("") || jPasswordField1.getText().equals("")
-                || NameSurnameTextField.getText().equals("") || PhoneNoTextField.getText().equals("")
-                || IDNumberLabel.getText().equals("")) {
-
-            JOptionPane.showMessageDialog(this, "Fill All Entries.",
-                    "Failure", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
-
-        if (Database.checkUsername(UsernameTextField.getText())) {
-            JOptionPane.showMessageDialog(this, "Username Already Exist.",
-                    "Failure", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
-
-        //System.out.println("AdminButton Selected: " + AdminButton.isSelected()); // Seçim kontrolü
-
         if (AdminButton.isSelected()) {
+            if (UsernameTextField.getText().equals("") || PasswordTextField.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Fill All Entries.", "Failure", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            User u = new User();
+            if (u.isUsernameExists(UsernameTextField.getText())) {
+                JOptionPane.showMessageDialog(this, "This username exits!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             JOptionPane.showMessageDialog(this, "Please enter the verification code given to you to verify that you are an admin.",
                     "Authentication", JOptionPane.INFORMATION_MESSAGE);
-
             try {
                 AuthenticationPageForAdmin authenticationPage = new AuthenticationPageForAdmin(
-                        NameSurnameTextField.getText(),
+                        SurnameTextField.getText(),
                         UsernameTextField.getText(),
                         PasswordLabel.getText(),
                         PhoneNoTextField.getText(),
                         IDNumberLabel.getText());
-                authenticationPage.setVisible(true); // Pencereyi görünür yap
-                dispose(); // Mevcut pencereyi kapat
+                authenticationPage.setVisible(true);
+                dispose();
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "An error occurred: " + e.getMessage(),
                         "Error", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
-        } else if(CustomerButton.isSelected()){
-            JOptionPane.showMessageDialog(this, "Customer account created !");
+            Admin admin = new Admin(PasswordTextField.getText(), UsernameTextField.getText());
+            admin.insertAdmin(admin);
+        } else if (CustomerButton.isSelected()) {
+            if (NameTextField.getText().equals("") || SurnameTextField.getText().equals("") || UsernameTextField.getText().equals("") || PasswordTextField.getText().equals("") || PhoneNoTextField.getText().equals("") || IDNumberTextField.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Fill All Entries.", "Failure", JOptionPane.INFORMATION_MESSAGE);
+                return;
             }
 
+            User u = new User();
+            if (u.isUsernameExists(UsernameTextField.getText())) {
+                JOptionPane.showMessageDialog(this, "This username exits!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
+            Customer customer = new Customer(NameTextField.getText(), SurnameTextField.getText(), PasswordTextField.getText(), UsernameTextField.getText(), PhoneNoTextField.getText(), IDNumberTextField.getText());
+            customer.insertCustomer(customer);
+            JOptionPane.showMessageDialog(this, "Customer account created !");
+        } else {
+            JOptionPane.showMessageDialog(this, "Please choose an account type!", "Failure", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_SignUpButtonActionPerformed
 
-    private void NameSurnameTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameSurnameTextField1ActionPerformed
+    private void NameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_NameSurnameTextField1ActionPerformed
+    }//GEN-LAST:event_NameTextFieldActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -608,22 +542,19 @@ public class StartScreen extends javax.swing.JFrame {
         });
     }
 
-//    public static void testInıt(){
-//        Customer customer1 = new Customer("a", "123", "a", "1230", "123");
-//    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AccTypeLabel;
     private javax.swing.JRadioButton AdminButton;
     private javax.swing.JRadioButton CustomerButton;
-    private javax.swing.JRadioButton ForgotPasswordButton;
     private javax.swing.JLabel IDNumberLabel;
     private javax.swing.JTextField IDNumberTextField;
     private javax.swing.JLabel LogoLabel;
-    private javax.swing.JTextField NameSurnameTextField;
-    private javax.swing.JTextField NameSurnameTextField1;
+    private javax.swing.JLabel NameSurnameLabel;
+    private javax.swing.JTextField NameTextField;
     private javax.swing.JLabel PasswordLabel;
     private javax.swing.JLabel PasswordLabel1;
+    private javax.swing.JPasswordField PasswordSignInTextField;
+    private javax.swing.JPasswordField PasswordTextField;
     private javax.swing.JTextField PhoneNoTextField;
     private javax.swing.JLabel PhoneNumberLabel;
     private javax.swing.JButton SignInButton;
@@ -633,10 +564,11 @@ public class StartScreen extends javax.swing.JFrame {
     private javax.swing.JLabel SignUpLabel;
     private javax.swing.JPanel SignUpPanel;
     private javax.swing.JPanel StartPanel;
+    private javax.swing.JTextField SurnameTextField;
     private javax.swing.JLabel UsernameLabel;
     private javax.swing.JLabel UsernameLabel1;
+    private javax.swing.JTextField UsernameSignInTextField;
     private javax.swing.JTextField UsernameTextField;
-    private javax.swing.JTextField UsernameTextField1;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.ButtonGroup buttonGroup3;
@@ -647,10 +579,7 @@ public class StartScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordSignIn;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JLabel nameSurnameLabel;
     // End of variables declaration//GEN-END:variables
 }
